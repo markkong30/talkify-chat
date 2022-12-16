@@ -2,8 +2,9 @@ import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 import Chat from './pages/Chat';
-import SignIn from './pages/SignIn';
+import SignIn from './pages/SignIn/SignIn';
 import SignUp from './pages/SignUp/SignUp';
+import { ToastContainer } from 'react-toastify';
 import { globalThemes } from './styled.theme';
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
 					<Route path="/" element={<Chat />} />
 				</Routes>
 			</BrowserRouter>
+			<ToastContainer />
 		</ThemeProvider>
 	);
 }

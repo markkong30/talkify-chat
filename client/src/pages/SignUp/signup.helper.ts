@@ -1,5 +1,9 @@
+import axios from 'axios';
 import { FormikHelpers } from 'formik';
 import * as Yup from 'yup';
+import { signUpAPI } from '../../utils/APIRoutes';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 interface Values {
 	email: string;
@@ -51,10 +55,40 @@ export const formikHelper = {
 			.oneOf([Yup.ref('password'), null], 'Does not match with password!')
 			.required('Required')
 	}),
-	handleSubmit: (values: Values, actions: FormikHelpers<Values>) => {
-		console.log(values);
+	handleSubmit: async (
+		values: Values,
+		actions: FormikHelpers<Values>,
+		navigate: any
+	) => {
 		actions.setSubmitting(true);
-		actions.resetForm();
+		const user = {
+			username: values.username,
+			email: values.email,
+			password: values.password
+		};
+
+		try {
+			const { data } = await axios({
+				method: 'post',
+				url: signUpAPI,
+				data: user,
+				withCredentials: true
+			});
+			console.log(data);
+
+			actions.resetForm();
+			toast.success('Sign up successfully 🦄');
+			navigate('/');
+		} catch (err) {
+			actions.setSubmitting(false);
+			if (axios.isAxiosError(err)) {
+				const { error } = err.response?.data;
+
+				toast.error(error, {
+					autoClose: 3000
+				});
+			}
+		}
 	},
 	validateOnChange: true
 };

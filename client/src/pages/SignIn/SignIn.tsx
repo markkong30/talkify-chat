@@ -1,11 +1,11 @@
 import React from 'react';
 import { Formik, Form, Field, ErrorMessage, FormikProps } from 'formik';
 import styled from 'styled-components';
-import { formikHelper } from './signup.helper';
+import { formikHelper } from './signin.helper';
 import logo from '../../assets/logo.svg';
 import { useNavigate } from 'react-router-dom';
 
-const SignUp: React.FC = () => {
+const SignIn: React.FC = () => {
 	const navigate = useNavigate();
 
 	const {
@@ -53,7 +53,7 @@ const SignUp: React.FC = () => {
 								Sign Up
 							</button>
 							<span>
-								Already have an account ?<a href="/signin">SignIn</a>
+								Already have an account ?<a href="/signup">SignUp</a>
 							</span>
 						</Form>
 					)}
@@ -149,4 +149,4 @@ const FormContainer = styled.div`
 	}
 `;
 
-export default SignUp;
+export default SignIn;
