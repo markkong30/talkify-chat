@@ -2,7 +2,8 @@ export const globalThemes = {
 	background: {
 		primary: '#4e0eff',
 		light: '#997af0',
-		dark: '#00000076'
+		dark: '#00000076',
+		semiDark: '#131324'
 	},
 	text: {
 		primary: 'white',

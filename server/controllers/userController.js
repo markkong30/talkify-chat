@@ -35,6 +35,7 @@ export const signUp = async (req, res, next) => {
 		res.cookie(process.env.TOKEN, token, {
 			httpOnly: true
 		});
+
 		return res.status(201).json({
 			user: {
 				id,
@@ -69,8 +70,36 @@ export const signIn = async (req, res, next) => {
 			user: {
 				id: user.id,
 				username: user.username,
-				email: user.email
+				email: user.email,
+				hasAvatar: user.hasAvatar,
+				avatar: user.avatar
 			}
+		});
+	} catch (err) {
+		next(err);
+	}
+};
+
+export const setAvatar = async (req, res, next) => {
+	try {
+		const { id } = req.params;
+		const { image } = req.body;
+
+		const user = await User.findOneAndUpdate(
+			{ id },
+			{
+				hasAvatar: true,
+				avatar: image
+			},
+			{
+				new: true
+			}
+		);
+
+		if (!user) return res.status(400).json({ error: 'Something went wrong' });
+
+		return res.status(200).json({
+			user
 		});
 	} catch (err) {
 		next(err);

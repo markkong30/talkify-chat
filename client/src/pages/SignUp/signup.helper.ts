@@ -4,6 +4,8 @@ import * as Yup from 'yup';
 import { signUpAPI } from '../../utils/APIRoutes';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { UserContextValue } from '../../types';
+import { NavigateFunction } from 'react-router-dom';
 
 interface Values {
 	email: string;
@@ -58,7 +60,8 @@ export const formikHelper = {
 	handleSubmit: async (
 		values: Values,
 		actions: FormikHelpers<Values>,
-		navigate: any
+		navigate: NavigateFunction,
+		userData: UserContextValue
 	) => {
 		actions.setSubmitting(true);
 		const user = {
@@ -74,11 +77,11 @@ export const formikHelper = {
 				data: user,
 				withCredentials: true
 			});
-			console.log(data);
 
+			userData?.setUser(data.user);
 			actions.resetForm();
-			toast.success('Sign up successfully 🦄');
-			navigate('/');
+
+			navigate('/pick-your-avatar');
 		} catch (err) {
 			actions.setSubmitting(false);
 			if (axios.isAxiosError(err)) {

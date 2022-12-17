@@ -1,12 +1,14 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Formik, Form, Field, ErrorMessage, FormikProps } from 'formik';
 import styled from 'styled-components';
 import { formikHelper } from './signup.helper';
 import logo from '../../assets/logo.svg';
 import { useNavigate } from 'react-router-dom';
+import { UserContext } from '../../context/UserContext';
 
 const SignUp: React.FC = () => {
 	const navigate = useNavigate();
+	const userData = useContext(UserContext);
 
 	const {
 		initialValues,
@@ -24,7 +26,7 @@ const SignUp: React.FC = () => {
 					validationSchema={validationSchema}
 					validateOnChange={validateOnChange}
 					onSubmit={(values, actions) =>
-						handleSubmit(values, actions, navigate)
+						handleSubmit(values, actions, navigate, userData)
 					}
 				>
 					{(props: FormikProps<any>) => (
@@ -71,7 +73,7 @@ const FormContainer = styled.div`
 	justify-content: center;
 	align-items: center;
 	gap: 1rem;
-	background-color: #131324;
+	background-color: ${({ theme }) => theme.background.semiDark};
 
 	.brand {
 		display: flex;
@@ -131,6 +133,10 @@ const FormContainer = styled.div`
 
 			&.disabled {
 				cursor: not-allowed;
+				background-color: ${({ theme }) => theme.background.light};
+			}
+
+			&:hover {
 				background-color: ${({ theme }) => theme.background.light};
 			}
 		}

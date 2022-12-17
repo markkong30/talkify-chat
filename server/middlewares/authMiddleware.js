@@ -15,7 +15,9 @@ export const getUserInfo = async (req, res, next) => {
 					user: {
 						id: user.id,
 						email: user.email,
-						username: user.username
+						username: user.username,
+						hasAvatar: user.hasAvatar,
+						avatar: user.avatar
 					}
 				});
 			} else {
