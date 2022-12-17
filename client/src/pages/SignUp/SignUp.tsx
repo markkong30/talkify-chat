@@ -114,7 +114,7 @@ const FormContainer = styled.div`
 
 		.error {
 			margin-top: 1rem;
-			color: ${({ theme }) => theme.text.primary};
+			color: ${({ theme }) => theme.text.error};
 		}
 
 		button {

@@ -46,3 +46,33 @@ export const signUp = async (req, res, next) => {
 		next(err);
 	}
 };
+
+export const signIn = async (req, res, next) => {
+	try {
+		const { email, password } = req.body;
+
+		const user = await User.findOne({ email });
+		if (!user)
+			return res.status(400).json({ error: 'Invalid email or password' });
+
+		const isPasswordValid = verifyPassword(password, user.password);
+		if (!isPasswordValid)
+			return res.status(400).json({ error: 'Invalid email or password' });
+
+		const token = createToken(user);
+
+		res.cookie(process.env.TOKEN, token, {
+			httpOnly: true
+		});
+
+		return res.status(200).json({
+			user: {
+				id: user.id,
+				username: user.username,
+				email: user.email
+			}
+		});
+	} catch (err) {
+		next(err);
+	}
+};

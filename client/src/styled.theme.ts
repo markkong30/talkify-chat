@@ -6,7 +6,8 @@ export const globalThemes = {
 	},
 	text: {
 		primary: 'white',
-		secondary: '#4e0eff'
+		secondary: '#4e0eff',
+		error: '#b44747'
 	},
 	border: {
 		primary: '#4e0eff',

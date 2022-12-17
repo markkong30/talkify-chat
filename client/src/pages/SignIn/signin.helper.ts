@@ -1,23 +1,19 @@
 import axios from 'axios';
 import { FormikHelpers } from 'formik';
 import * as Yup from 'yup';
-import { signUpAPI } from '../../utils/APIRoutes';
+import { signInAPI } from '../../utils/APIRoutes';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 interface Values {
 	email: string;
-	username: string;
 	password: string;
-	confirmPassword: string;
 }
 
 export const formikHelper = {
 	initialValues: {
 		email: '',
-		username: '',
-		password: '',
-		confirmPassword: ''
+		password: ''
 	},
 	fields: [
 		{
@@ -45,7 +41,6 @@ export const formikHelper = {
 	) => {
 		actions.setSubmitting(true);
 		const user = {
-			username: values.username,
 			email: values.email,
 			password: values.password
 		};
@@ -53,14 +48,14 @@ export const formikHelper = {
 		try {
 			const { data } = await axios({
 				method: 'post',
-				url: signUpAPI,
+				url: signInAPI,
 				data: user,
 				withCredentials: true
 			});
 			console.log(data);
 
 			actions.resetForm();
-			toast.success('Sign up successfully 🦄');
+			toast.success('Sign in successfully 🦄');
 			navigate('/');
 		} catch (err) {
 			actions.setSubmitting(false);
