@@ -81,6 +81,12 @@ export const signIn = async (req, res, next) => {
 	}
 };
 
+export const signOut = (req, res, next) => {
+	res.clearCookie(process.env.TOKEN);
+
+	return res.status(200).json({ message: 'User sign out successfully' });
+};
+
 export const setAvatar = async (req, res, next) => {
 	try {
 		const { id } = req.params;

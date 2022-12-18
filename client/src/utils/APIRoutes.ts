@@ -6,6 +6,7 @@ const getRandomNumber = () => Math.round(Math.random() * 1000000);
 // user auth
 export const signUpAPI = combineURL('/auth/signup');
 export const signInAPI = combineURL('/auth/signin');
+export const signOutAPI = combineURL('/auth/signout');
 export const getUserInfo = combineURL('/auth');
 export const setAvatarAPI = (userId: string) =>
 	combineURL(`/auth/setAvatar/${userId}`);

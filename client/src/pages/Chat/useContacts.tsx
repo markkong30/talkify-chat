@@ -1,9 +1,10 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import { User } from '../../types';
 import { allUsersAPI } from '../../utils/APIRoutes';
 
 export const useContacts = (isUser: boolean) => {
-	const [contacts, setContacts] = useState([]);
+	const [contacts, setContacts] = useState<User[]>([]);
 
 	useEffect(() => {
 		const getAllUsers = async () => {

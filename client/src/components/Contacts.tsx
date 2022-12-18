@@ -1,9 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
-import { User } from '../../types';
-import logo from '../../assets/logo.svg';
+import { User } from '../types';
+import logo from '../assets/logo.svg';
 import classNames from 'classnames';
-import { convertStringToBase64 } from '../../utils/helpers';
+import { convertStringToBase64 } from '../utils/helpers';
 
 type Props = {
 	contacts: User[];

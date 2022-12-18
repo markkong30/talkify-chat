@@ -1,17 +1,20 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import Welcome from '../../components/Welcome';
 import { UserContext } from '../../context/UserContext';
-import Contacts from './Contacts';
+import Contacts from '../../components/Contacts';
 import { useContacts } from './useContacts';
+import ChatContainer from '../../components/ChatContainer';
 
 const Chat = () => {
 	const navigate = useNavigate();
 	const userData = useContext(UserContext);
 	const { contacts } = useContacts(!!userData?.user);
 	const [currentChatUserId, setCurrentChatUserId] = useState('');
-
-	console.log(contacts);
+	const currentChatUser = contacts?.find(
+		(contact) => contact.id === currentChatUserId
+	);
 
 	useEffect(() => {
 		if (userData?.isUserAbsent) {
@@ -23,6 +26,8 @@ const Chat = () => {
 		}
 	}, [userData, navigate]);
 
+	if (!userData?.user) return <div>Loading...</div>;
+
 	return (
 		<Container>
 			<div className="main">
@@ -32,6 +37,11 @@ const Chat = () => {
 					currentChatUserId={currentChatUserId}
 					setCurrentChatUserId={setCurrentChatUserId}
 				/>
+				{currentChatUser ? (
+					<ChatContainer currentChatUser={currentChatUser} />
+				) : (
+					<Welcome currentUser={userData?.user} />
+				)}
 			</div>
 		</Container>
 	);
