@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { User } from '../types';
 import { convertStringToBase64 } from '../utils/helpers';
+import ChatInput from './ChatInput';
+import Messages from './Messages';
 import SignOut from './SignOut';
 
 type Props = {
@@ -9,6 +11,10 @@ type Props = {
 };
 
 const ChatContainer: React.FC<Props> = ({ currentChatUser }) => {
+	const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+	const [newMessage, setNewMessage] = useState('');
+	const sendMessage = (message: string) => {};
+
 	return (
 		<Container>
 			<div className="header">
@@ -25,13 +31,21 @@ const ChatContainer: React.FC<Props> = ({ currentChatUser }) => {
 				</div>
 				<SignOut />
 			</div>
-			<div className="messages"></div>
-			<div className="input"></div>
+			<Messages />
+			<ChatInput
+				sendMessage={sendMessage}
+				showEmojiPicker={showEmojiPicker}
+				setShowEmojiPicker={setShowEmojiPicker}
+				newMessage={newMessage}
+				setNewMessage={setNewMessage}
+			/>
 		</Container>
 	);
 };
 
 const Container = styled.div`
+	display: flex;
+	flex-direction: column;
 	padding-top: 1rem;
 
 	.header {

@@ -4,7 +4,8 @@ export const globalThemes = {
 		light: '#997af0',
 		dark: '#00000076',
 		semiDark: '#131324',
-		lightGray: '#ffffff39'
+		lightGray: '#ffffff39',
+		intenseDark: '#080420'
 	},
 	text: {
 		primary: '#ffffff',

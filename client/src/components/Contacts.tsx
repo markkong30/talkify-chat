@@ -61,7 +61,7 @@ const Container = styled.div`
 	display: grid;
 	grid-template-rows: 10% 75% 15%;
 	overflow: hidden;
-	background-color: #080420;
+	background-color: ${({ theme }) => theme.background.intenseDark};
 
 	.brand {
 		display: flex;
