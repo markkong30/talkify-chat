@@ -16,5 +16,5 @@ export const getUserInfo = async (req, res, next) => {
 		res.status(404).json({ message: 'Token is not exist' });
 	}
 
-	next();
+	await next();
 };

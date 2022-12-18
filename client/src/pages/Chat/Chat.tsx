@@ -1,11 +1,17 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { UserContext } from '../../context/UserContext';
+import Contacts from './Contacts';
+import { useContacts } from './useContacts';
 
 const Chat = () => {
 	const navigate = useNavigate();
 	const userData = useContext(UserContext);
+	const { contacts } = useContacts(!!userData?.user);
+	const [currentChatUserId, setCurrentChatUserId] = useState('');
+
+	console.log(contacts);
 
 	useEffect(() => {
 		if (userData?.isUserAbsent) {
@@ -19,7 +25,14 @@ const Chat = () => {
 
 	return (
 		<Container>
-			<div className="main">hi</div>
+			<div className="main">
+				<Contacts
+					contacts={contacts}
+					currentUser={userData?.user}
+					currentChatUserId={currentChatUserId}
+					setCurrentChatUserId={setCurrentChatUserId}
+				/>
+			</div>
 		</Container>
 	);
 };

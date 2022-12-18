@@ -8,6 +8,7 @@ import loader from '../../assets/loader.gif';
 import { Buffer } from 'buffer';
 import { UserContext } from '../../context/UserContext';
 import { toast } from 'react-toastify';
+import { convertStringToBase64 } from '../../utils/helpers';
 
 const SetAvatar: React.FC = () => {
 	const navigate = useNavigate();
@@ -78,7 +79,7 @@ const SetAvatar: React.FC = () => {
 							)}
 							onClick={() => setSelectedAvatar(i)}
 						>
-							<img src={`data:image/svg+xml;base64,${avatar}`} alt="avatar" />
+							<img src={convertStringToBase64(avatar)} alt="avatar" />
 						</div>
 					))}
 				</div>
