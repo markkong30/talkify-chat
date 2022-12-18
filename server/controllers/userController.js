@@ -5,7 +5,8 @@ import {
 	createToken,
 	verifyPassword,
 	hashPassword,
-	verifyToken
+	verifyToken,
+	getCurrentUser
 } from '../utils/auth.js';
 
 export const signUp = async (req, res, next) => {
@@ -101,6 +102,26 @@ export const setAvatar = async (req, res, next) => {
 		return res.status(200).json({
 			user
 		});
+	} catch (err) {
+		next(err);
+	}
+};
+
+export const getAllUsers = async (req, res, next) => {
+	const token = req.cookies[process.env.TOKEN];
+
+	try {
+		const currentUser = await getCurrentUser(token);
+		if (!currentUser) return res.status(403).json({ message: 'Please log in' });
+
+		const users = await User.find({ id: { $ne: currentUser.id } }).select([
+			'id',
+			'username',
+			'email',
+			'avatar'
+		]);
+
+		return res.status(200).json(users);
 	} catch (err) {
 		next(err);
 	}

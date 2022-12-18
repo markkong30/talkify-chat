@@ -10,6 +10,8 @@ type Props = { children: ReactNode };
 export const UserInfo: React.FC<Props> = ({ children }) => {
 	const [user, setUser] = useState<User>();
 	const [isFetchingUser, setIsFetchingUser] = useState(true);
+	const isUserAbsent = !user && !isFetchingUser;
+	const isAvatarAbsent = !user?.hasAvatar && !isFetchingUser;
 
 	useEffect(() => {
 		axios({
@@ -20,16 +22,20 @@ export const UserInfo: React.FC<Props> = ({ children }) => {
 			.then(({ data }) => {
 				console.log(data);
 				setUser(data.user);
-				setIsFetchingUser(false);
 			})
 			.catch((err) => {
 				console.log(err);
+				setIsFetchingUser(false);
+			})
+			.finally(() => {
 				setIsFetchingUser(false);
 			});
 	}, []);
 
 	return (
-		<UserContext.Provider value={{ user, setUser, isFetchingUser }}>
+		<UserContext.Provider
+			value={{ user, setUser, isFetchingUser, isUserAbsent, isAvatarAbsent }}
+		>
 			{children}
 		</UserContext.Provider>
 	);

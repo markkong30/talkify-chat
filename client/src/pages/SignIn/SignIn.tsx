@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Formik, Form, Field, ErrorMessage, FormikProps } from 'formik';
 import styled from 'styled-components';
 import { formikHelper } from './signin.helper';
@@ -9,6 +9,11 @@ import { UserContext } from '../../context/UserContext';
 const SignIn: React.FC = () => {
 	const navigate = useNavigate();
 	const userData = useContext(UserContext);
+
+	useEffect(() => {
+		if (userData?.isUserAbsent) return navigate('/signin');
+		if (!userData?.isAvatarAbsent) return navigate('/');
+	}, [userData, navigate]);
 
 	const {
 		initialValues,
