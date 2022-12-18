@@ -13,7 +13,13 @@ type Props = {
 const ChatContainer: React.FC<Props> = ({ currentChatUser }) => {
 	const [showEmojiPicker, setShowEmojiPicker] = useState(false);
 	const [newMessage, setNewMessage] = useState('');
-	const sendMessage = (message: string) => {};
+	const sendMessage = (
+		e: React.FormEvent<HTMLFormElement>,
+		message: string
+	) => {
+		e.preventDefault();
+		console.log(message);
+	};
 
 	return (
 		<Container>

@@ -1,11 +1,6 @@
 import mongoose from 'mongoose';
 
 const userSchema = new mongoose.Schema({
-	id: {
-		type: String,
-		require: true,
-		unique: true
-	},
 	username: {
 		type: String,
 		require: true,

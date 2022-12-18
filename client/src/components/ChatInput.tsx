@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import { Theme } from 'emoji-picker-react';
 
 type Props = {
-	sendMessage: (message: string) => void;
+	sendMessage: (e: React.FormEvent<HTMLFormElement>, message: string) => void;
 	showEmojiPicker: boolean;
 	setShowEmojiPicker: (
 		value: boolean | ((prevState: boolean) => boolean)
@@ -36,7 +36,7 @@ const ChatInput: React.FC<Props> = ({
 					</div>
 				)}
 			</div>
-			<form className="input">
+			<form className="input" onSubmit={(e) => sendMessage(e, newMessage)}>
 				<input
 					type="text"
 					name="message"
@@ -74,7 +74,30 @@ const Container = styled.div`
 
 		.picker {
 			position: absolute;
-			bottom: 2rem;
+			bottom: 3rem;
+		}
+
+		//emoji-picker-react
+		.EmojiPickerReact {
+			background-color: ${({ theme }) => theme.background.intenseDark};
+			box-shadow: 0 5px 10px ${({ theme }) => theme.background.light};
+			border-color: ${({ theme }) => theme.background.light};
+			.epr-body::-webkit-scrollbar {
+				background-color: #080420;
+				width: 5px;
+				&-thumb {
+					background-color: ${({ theme }) => theme.background.light};
+				}
+			}
+			.emoji-categories {
+				button {
+					filter: contrast(0);
+				}
+			}
+			.epr-search {
+				background-color: transparent;
+				border-color: #9a86f3;
+			}
 		}
 	}
 
@@ -82,7 +105,7 @@ const Container = styled.div`
 		display: flex;
 		align-items: center;
 		gap: 1rem;
-		height: 2rem;
+		height: 3rem;
 
 		input {
 			height: 100%;

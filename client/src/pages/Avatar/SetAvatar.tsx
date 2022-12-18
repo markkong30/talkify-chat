@@ -41,7 +41,7 @@ const SetAvatar: React.FC = () => {
 	const setProfileImage = async () => {
 		if (!userData?.user || typeof selectedAvatar !== 'number') return;
 
-		const { data } = await axios.post(setAvatarAPI(userData?.user?.id), {
+		const { data } = await axios.post(setAvatarAPI(userData?.user?._id), {
 			image: avatars[selectedAvatar]
 		});
 

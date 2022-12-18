@@ -22,10 +22,8 @@ export const signUp = async (req, res, next) => {
 			return res.status(400).json({ error: 'Email already exists' });
 
 		const hashedPassword = await hashPassword(password);
-		const id = await crypto.randomUUID();
 
 		const user = await User.create({
-			id,
 			email,
 			username,
 			password: hashedPassword
@@ -39,7 +37,7 @@ export const signUp = async (req, res, next) => {
 
 		return res.status(201).json({
 			user: {
-				id,
+				_id: user._id,
 				username,
 				email
 			}
@@ -69,7 +67,7 @@ export const signIn = async (req, res, next) => {
 
 		return res.status(200).json({
 			user: {
-				id: user.id,
+				_id: user._id,
 				username: user.username,
 				email: user.email,
 				hasAvatar: user.hasAvatar,
@@ -92,8 +90,8 @@ export const setAvatar = async (req, res, next) => {
 		const { id } = req.params;
 		const { image } = req.body;
 
-		const user = await User.findOneAndUpdate(
-			{ id },
+		const user = await User.findByIdAndUpdate(
+			id,
 			{
 				hasAvatar: true,
 				avatar: image
@@ -120,8 +118,8 @@ export const getAllUsers = async (req, res, next) => {
 		const currentUser = await getCurrentUser(token);
 		if (!currentUser) return res.status(403).json({ message: 'Please log in' });
 
-		const users = await User.find({ id: { $ne: currentUser.id } }).select([
-			'id',
+		const users = await User.find({ _id: { $ne: currentUser._id } }).select([
+			'_id',
 			'username',
 			'email',
 			'avatar'

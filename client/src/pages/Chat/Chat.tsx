@@ -13,7 +13,7 @@ const Chat = () => {
 	const { contacts } = useContacts(!!userData?.user);
 	const [currentChatUserId, setCurrentChatUserId] = useState('');
 	const currentChatUser = contacts?.find(
-		(contact) => contact.id === currentChatUserId
+		(contact) => contact._id === currentChatUserId
 	);
 
 	useEffect(() => {

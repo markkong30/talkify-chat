@@ -31,10 +31,10 @@ const Contacts: React.FC<Props> = ({
 					<div
 						className={classNames(
 							'contact',
-							currentChatUserId === contact.id && 'contact--active'
+							currentChatUserId === contact._id && 'contact--active'
 						)}
-						key={contact.id}
-						onClick={() => setCurrentChatUserId(contact.id)}
+						key={contact._id}
+						onClick={() => setCurrentChatUserId(contact._id)}
 					>
 						<div className="avatar">
 							<img src={convertStringToBase64(contact.avatar)} alt="avatar" />

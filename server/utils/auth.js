@@ -3,7 +3,7 @@ import bcrypt from 'bcrypt';
 import User from '../model/userModel.js';
 
 const createToken = (userInfo) =>
-	jwt.sign({ id: userInfo.id }, process.env.SECRET);
+	jwt.sign({ _id: userInfo._id }, process.env.SECRET);
 
 const verifyPassword = (attemptedPw, hashedPw) =>
 	bcrypt.compareSync(attemptedPw, hashedPw);
@@ -17,10 +17,10 @@ const getCurrentUser = async (token) => {
 
 	if (!existingUser) return;
 
-	const user = await User.findOne({ id: existingUser.id });
+	const user = await User.findById(existingUser._id);
 
 	return {
-		id: user.id,
+		_id: user._id,
 		username: user.username,
 		email: user.email,
 		hasAvatar: user.hasAvatar,

@@ -47,6 +47,7 @@ const Button = styled.div`
 	border: none;
 
 	svg {
+		font-size: 1.5rem;
 		color: ${({ theme }) => theme.text.primary};
 	}
 `;
