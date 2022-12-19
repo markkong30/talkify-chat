@@ -1,6 +1,5 @@
 import User from '../model/userModel.js';
 import brcypt from 'bcrypt';
-import crypto from 'crypto';
 import {
 	createToken,
 	verifyPassword,

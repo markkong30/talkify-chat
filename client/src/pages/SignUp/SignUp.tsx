@@ -11,7 +11,8 @@ const SignUp: React.FC = () => {
 	const userData = useContext(UserContext);
 
 	useEffect(() => {
-		// if (!userData?.isAvatarAbsent) return navigate('/');
+		if (userData?.isAvatarAbsent) return navigate('/pick-your-avatar');
+		if (userData?.user) return navigate('/');
 	}, [userData, navigate]);
 
 	const {

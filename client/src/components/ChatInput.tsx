@@ -89,11 +89,7 @@ const Container = styled.div`
 					background-color: ${({ theme }) => theme.background.light};
 				}
 			}
-			.emoji-categories {
-				button {
-					filter: contrast(0);
-				}
-			}
+
 			.epr-search {
 				background-color: transparent;
 				border-color: #9a86f3;

@@ -1,24 +1,37 @@
+import axios from 'axios';
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { useChat } from '../pages/Chat/useChat';
 import { User } from '../types';
+import { saveMessageAPI } from '../utils/APIRoutes';
 import { convertStringToBase64 } from '../utils/helpers';
 import ChatInput from './ChatInput';
 import Messages from './Messages';
 import SignOut from './SignOut';
 
 type Props = {
+	user: User;
 	currentChatUser: User;
 };
 
-const ChatContainer: React.FC<Props> = ({ currentChatUser }) => {
+const ChatContainer: React.FC<Props> = ({ user, currentChatUser }) => {
 	const [showEmojiPicker, setShowEmojiPicker] = useState(false);
 	const [newMessage, setNewMessage] = useState('');
-	const sendMessage = (
+	const { messages } = useChat(user._id, currentChatUser._id);
+
+	const sendMessage = async (
 		e: React.FormEvent<HTMLFormElement>,
 		message: string
 	) => {
 		e.preventDefault();
-		console.log(message);
+
+		const { data } = await axios.post(saveMessageAPI, {
+			from: user._id,
+			to: currentChatUser._id,
+			message
+		});
+
+		console.log(data);
 	};
 
 	return (

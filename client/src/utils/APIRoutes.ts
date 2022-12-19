@@ -14,6 +14,8 @@ export const getAvatarAPI = () =>
 	`https://api.multiavatar.com/${getRandomNumber()}?apikey=${
 		process.env.REACT_APP_MULTIAVATAR_KEY
 	}`;
-
-// chat
 export const allUsersAPI = combineURL('/auth/allUsers');
+
+// chat message
+export const saveMessageAPI = combineURL('/message/save');
+export const getAllMessagesAPI = combineURL('/message');

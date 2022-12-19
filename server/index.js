@@ -4,6 +4,7 @@ import mongoose, { connect } from 'mongoose';
 import * as dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
 import userRoutes from './routes/userRoutes.js';
+import messageRoutes from './routes/messagesRoute.js';
 dotenv.config();
 
 const app = express();
@@ -18,6 +19,7 @@ app.use(
 app.use(cookieParser());
 app.use(express.json());
 app.use('/api/auth', userRoutes);
+app.use('/api/message', messageRoutes);
 
 mongoose
 	.connect(process.env.MONGO_URL, {

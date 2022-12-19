@@ -15,3 +15,9 @@ type UserContext = {
 };
 
 export type UserContextValue = UserContext | undefined;
+
+export type Message = {
+	message: string;
+	from: string;
+	to: string;
+};

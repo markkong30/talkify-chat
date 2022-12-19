@@ -38,7 +38,10 @@ const Chat = () => {
 					setCurrentChatUserId={setCurrentChatUserId}
 				/>
 				{currentChatUser ? (
-					<ChatContainer currentChatUser={currentChatUser} />
+					<ChatContainer
+						user={userData.user}
+						currentChatUser={currentChatUser}
+					/>
 				) : (
 					<Welcome currentUser={userData?.user} />
 				)}
