@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import Welcome from '../../components/Welcome';
@@ -9,8 +9,7 @@ import ChatContainer from '../../components/ChatContainer';
 import { io, Socket } from 'socket.io-client';
 
 const Chat = () => {
-	const socket: Socket = io('http://localhost:5000');
-	// const [socket, setSocket] = useState(null);
+	const socket: Socket = io(process.env.REACT_APP_SOCKET || '');
 	const navigate = useNavigate();
 	const userData = useContext(UserContext);
 	const { contacts } = useContacts(!!userData?.user);

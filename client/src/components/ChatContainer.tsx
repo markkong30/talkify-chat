@@ -1,10 +1,8 @@
-import axios from 'axios';
 import React, { useState } from 'react';
 import { Socket } from 'socket.io-client';
 import styled from 'styled-components';
 import { useChat } from '../pages/Chat/useChat';
 import { User } from '../types';
-import { sendMessageAPI } from '../utils/APIRoutes';
 import { convertStringToBase64 } from '../utils/helpers';
 import ChatInput from './ChatInput';
 import Messages from './Messages';
