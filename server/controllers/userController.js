@@ -31,7 +31,9 @@ export const signUp = async (req, res, next) => {
 		const token = createToken(user);
 
 		res.cookie(process.env.TOKEN, token, {
-			httpOnly: true
+			httpOnly: true,
+			sameSite: 'none',
+			secure: true
 		});
 
 		return res.status(201).json({
@@ -61,7 +63,9 @@ export const signIn = async (req, res, next) => {
 		const token = createToken(user);
 
 		res.cookie(process.env.TOKEN, token, {
-			httpOnly: true
+			httpOnly: true,
+			sameSite: 'none',
+			secure: true
 		});
 
 		return res.status(200).json({
