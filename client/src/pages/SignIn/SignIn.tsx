@@ -11,8 +11,9 @@ const SignIn: React.FC = () => {
 	const userData = useContext(UserContext);
 
 	useEffect(() => {
-		if (userData?.isUserAbsent) return navigate('/signin');
-		if (!userData?.isAvatarAbsent) return navigate('/');
+		if (userData?.isUserAbsent) return;
+		if (userData?.isAvatarAbsent) return navigate('/pick-your-avatar');
+		if (userData?.user) return navigate('/');
 	}, [userData, navigate]);
 
 	const {
