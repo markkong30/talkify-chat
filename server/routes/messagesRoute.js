@@ -1,12 +1,12 @@
 import express from 'express';
 import {
 	getAllMessages,
-	saveMessage
+	sendMessage
 } from '../controllers/messagesController.js';
 
 const router = express.Router();
 
 router.post('/', getAllMessages);
-router.post('/save', saveMessage);
+router.post('/send', sendMessage);
 
 export default router;

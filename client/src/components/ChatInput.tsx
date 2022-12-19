@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import { Theme } from 'emoji-picker-react';
 
 type Props = {
-	sendMessage: (e: React.FormEvent<HTMLFormElement>, message: string) => void;
+	sendMessage: (message: string) => void;
 	showEmojiPicker: boolean;
 	setShowEmojiPicker: (
 		value: boolean | ((prevState: boolean) => boolean)
@@ -36,11 +36,19 @@ const ChatInput: React.FC<Props> = ({
 					</div>
 				)}
 			</div>
-			<form className="input" onSubmit={(e) => sendMessage(e, newMessage)}>
+			<form
+				className="input"
+				onSubmit={(e) => {
+					e.preventDefault();
+					sendMessage(newMessage);
+					setNewMessage('');
+				}}
+			>
 				<input
 					type="text"
 					name="message"
 					placeholder="type your message here"
+					autoComplete="off"
 					value={newMessage}
 					onChange={(e) => setNewMessage(e.target.value)}
 				/>

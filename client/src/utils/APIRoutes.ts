@@ -17,5 +17,5 @@ export const getAvatarAPI = () =>
 export const allUsersAPI = combineURL('/auth/allUsers');
 
 // chat message
-export const saveMessageAPI = combineURL('/message/save');
+export const sendMessageAPI = combineURL('/message/send');
 export const getAllMessagesAPI = combineURL('/message');

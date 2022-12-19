@@ -1,9 +1,10 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { Message, User } from '../../types';
-import { getAllMessagesAPI } from '../../utils/APIRoutes';
+import { Socket } from 'socket.io-client';
+import { Message } from '../../types';
+import { getAllMessagesAPI, sendMessageAPI } from '../../utils/APIRoutes';
 
-export const useChat = (userId: string, chatUserId: string) => {
+export const useChat = (userId: string, chatUserId: string, socket: Socket) => {
 	const [messages, setMessages] = useState<Message[]>([]);
 
 	useEffect(() => {
@@ -20,5 +21,46 @@ export const useChat = (userId: string, chatUserId: string) => {
 			});
 	}, [userId, chatUserId]);
 
-	return { messages };
+	useEffect(() => {
+		if (socket) {
+			socket.on('msg-receive', (message: Message) => {
+				updateMessages({
+					fromSelf: false,
+					message: message.message,
+					_id: message._id
+				});
+			});
+		}
+	}, [socket]);
+
+	const updateMessages = (message: Message) => {
+		setMessages((prev) => [...prev, message]);
+	};
+
+	const sendMessage = async (message: string) => {
+		try {
+			const { data } = await axios.post(sendMessageAPI, {
+				from: userId,
+				to: chatUserId,
+				message
+			});
+
+			socket.emit('send-msg', {
+				_id: data._id,
+				from: data.sender,
+				to: data.users.find((user: string) => user !== data.sender),
+				message: data.message.text
+			});
+
+			updateMessages({
+				fromSelf: true,
+				message: data.message.text,
+				_id: data._id
+			});
+		} catch (err) {
+			console.log(err);
+		}
+	};
+
+	return { messages, updateMessages, sendMessage };
 };

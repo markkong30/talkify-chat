@@ -1,9 +1,10 @@
 import axios from 'axios';
 import React, { useState } from 'react';
+import { Socket } from 'socket.io-client';
 import styled from 'styled-components';
 import { useChat } from '../pages/Chat/useChat';
 import { User } from '../types';
-import { saveMessageAPI } from '../utils/APIRoutes';
+import { sendMessageAPI } from '../utils/APIRoutes';
 import { convertStringToBase64 } from '../utils/helpers';
 import ChatInput from './ChatInput';
 import Messages from './Messages';
@@ -12,27 +13,17 @@ import SignOut from './SignOut';
 type Props = {
 	user: User;
 	currentChatUser: User;
+	socket: Socket;
 };
 
-const ChatContainer: React.FC<Props> = ({ user, currentChatUser }) => {
+const ChatContainer: React.FC<Props> = ({ user, currentChatUser, socket }) => {
 	const [showEmojiPicker, setShowEmojiPicker] = useState(false);
 	const [newMessage, setNewMessage] = useState('');
-	const { messages } = useChat(user._id, currentChatUser._id);
-
-	const sendMessage = async (
-		e: React.FormEvent<HTMLFormElement>,
-		message: string
-	) => {
-		e.preventDefault();
-
-		const { data } = await axios.post(saveMessageAPI, {
-			from: user._id,
-			to: currentChatUser._id,
-			message
-		});
-
-		console.log(data);
-	};
+	const { messages, sendMessage } = useChat(
+		user._id,
+		currentChatUser._id,
+		socket
+	);
 
 	return (
 		<Container>
@@ -50,7 +41,7 @@ const ChatContainer: React.FC<Props> = ({ user, currentChatUser }) => {
 				</div>
 				<SignOut />
 			</div>
-			<Messages />
+			<Messages messages={messages} />
 			<ChatInput
 				sendMessage={sendMessage}
 				showEmojiPicker={showEmojiPicker}
@@ -66,6 +57,7 @@ const Container = styled.div`
 	display: flex;
 	flex-direction: column;
 	padding-top: 1rem;
+	overflow: hidden;
 
 	.header {
 		display: flex;
