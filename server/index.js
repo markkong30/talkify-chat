@@ -6,9 +6,11 @@ import * as dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
 import userRoutes from './routes/userRoutes.js';
 import messageRoutes from './routes/messagesRoute.js';
+import http from 'http';
 dotenv.config();
 
 const app = express();
+const httpServer = http.createServer(app);
 const PORT = process.env.PORT || 5000;
 
 app.use(
@@ -34,7 +36,7 @@ mongoose
 		console.log(err);
 	});
 
-const server = app.listen(PORT, () =>
+const server = httpServer.listen(PORT, () =>
 	console.log(`Server running on port ${PORT}`)
 );
 
