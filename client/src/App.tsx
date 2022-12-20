@@ -21,7 +21,7 @@ function App() {
 		emitter.on('myEvent', () => {
 			console.log('myEvent was emitted');
 		});
-	});
+	}, []);
 
 	return (
 		<UserInfo>
