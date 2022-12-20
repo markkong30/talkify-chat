@@ -6,10 +6,8 @@ import { UserContext } from '../../context/UserContext';
 import Contacts from '../../components/Contacts';
 import { useContacts } from './useContacts';
 import ChatContainer from '../../components/ChatContainer';
-import { io, Socket } from 'socket.io-client';
 
 const Chat = () => {
-	const socket: Socket = io(process.env.REACT_APP_SOCKET || '');
 	const navigate = useNavigate();
 	const userData = useContext(UserContext);
 	const { contacts } = useContacts(!!userData?.user);
@@ -27,10 +25,10 @@ const Chat = () => {
 			return navigate('/pick-your-avatar');
 		}
 
-		if (userData?.user) {
-			socket.emit('add-user', userData.user._id);
+		if (userData?.user && userData.socket) {
+			userData.socket.emit('add-user', userData.user._id);
 		}
-	}, [userData, navigate, socket]);
+	}, [userData, navigate]);
 
 	if (!userData?.user) return <div>Loading...</div>;
 
@@ -47,7 +45,7 @@ const Chat = () => {
 					<ChatContainer
 						user={userData.user}
 						currentChatUser={currentChatUser}
-						socket={socket}
+						socket={userData.socket}
 					/>
 				) : (
 					<Welcome currentUser={userData?.user} />

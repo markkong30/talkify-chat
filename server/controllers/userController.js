@@ -62,6 +62,7 @@ export const signIn = async (req, res, next) => {
 
 		const token = createToken(user);
 
+		console.log(token);
 		res.cookie(process.env.TOKEN, token, {
 			httpOnly: true,
 			sameSite: 'none',
@@ -116,7 +117,7 @@ export const setAvatar = async (req, res, next) => {
 
 export const getAllUsers = async (req, res, next) => {
 	const token = req.cookies[process.env.TOKEN];
-
+	console.log(token);
 	try {
 		const currentUser = await getCurrentUser(token);
 		if (!currentUser) return res.status(403).json({ message: 'Please log in' });

@@ -1,3 +1,5 @@
+import { Socket } from 'socket.io-client';
+
 export type User = {
 	_id: string;
 	email: string;
@@ -7,6 +9,7 @@ export type User = {
 };
 
 type UserContext = {
+	socket: Socket;
 	user: User | undefined;
 	setUser: (user: User | undefined) => void;
 	isFetchingUser: boolean;
