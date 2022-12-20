@@ -47,6 +47,8 @@ const io = new Server(server, {
 	}
 });
 
+io.setMaxListeners(100);
+
 global.onlineUsers = new Map();
 
 io.on('connection', (socket) => {
