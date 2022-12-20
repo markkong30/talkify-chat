@@ -62,7 +62,6 @@ export const signIn = async (req, res, next) => {
 
 		const token = createToken(user);
 
-		console.log(token);
 		res.cookie(process.env.TOKEN, token, {
 			httpOnly: true,
 			sameSite: 'none',
@@ -84,7 +83,11 @@ export const signIn = async (req, res, next) => {
 };
 
 export const signOut = (req, res, next) => {
-	res.clearCookie(process.env.TOKEN);
+	res.clearCookie(process.env.TOKEN, {
+		httpOnly: true,
+		sameSite: 'none',
+		secure: true
+	});
 
 	return res.status(200).json({ message: 'User sign out successfully' });
 };
@@ -117,7 +120,7 @@ export const setAvatar = async (req, res, next) => {
 
 export const getAllUsers = async (req, res, next) => {
 	const token = req.cookies[process.env.TOKEN];
-	console.log(token);
+
 	try {
 		const currentUser = await getCurrentUser(token);
 		if (!currentUser) return res.status(403).json({ message: 'Please log in' });
