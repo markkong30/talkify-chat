@@ -116,7 +116,6 @@ export const setAvatar = async (req, res, next) => {
 
 export const getAllUsers = async (req, res, next) => {
 	const token = req.cookies[process.env.TOKEN];
-	console.log(process.env.TOKEN, token);
 
 	try {
 		const currentUser = await getCurrentUser(token);

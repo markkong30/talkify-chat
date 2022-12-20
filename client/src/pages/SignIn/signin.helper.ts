@@ -4,7 +4,7 @@ import * as Yup from 'yup';
 import { signInAPI } from '../../utils/APIRoutes';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { User, UserContextValue } from '../../types';
+import { UserContextValue } from '../../types';
 import { NavigateFunction } from 'react-router-dom';
 
 interface Values {
