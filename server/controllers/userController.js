@@ -129,10 +129,35 @@ export const getAllUsers = async (req, res, next) => {
 			'_id',
 			'username',
 			'email',
-			'avatar'
+			'avatar',
+			'lastSeen',
+			'online'
 		]);
 
 		return res.status(200).json(users);
+	} catch (err) {
+		next(err);
+	}
+};
+
+export const updateOnlineStatus = async (req, res, next) => {
+	// const token = req.cookies[process.env.TOKEN];
+
+	try {
+		// const currentUser = await getCurrentUser(token);
+		// if (!currentUser) return res.status(403).json({ message: 'Please log in' });
+
+		const user = await User.findByIdAndUpdate(
+			req.body.userId,
+			{
+				online: false
+			},
+			{
+				new: true
+			}
+		);
+
+		return res.status(200).json(user);
 	} catch (err) {
 		next(err);
 	}

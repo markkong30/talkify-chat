@@ -10,11 +10,13 @@ import ChatContainer from '../../components/ChatContainer';
 const Chat = () => {
 	const navigate = useNavigate();
 	const userData = useContext(UserContext);
-	const { contacts } = useContacts(!!userData?.user);
+	const { contacts } = useContacts(!!userData?.user, userData?.socket);
 	const [currentChatUserId, setCurrentChatUserId] = useState('');
 	const currentChatUser = contacts?.find(
 		(contact) => contact._id === currentChatUserId
 	);
+
+	console.log(contacts);
 
 	useEffect(() => {
 		if (userData?.isUserAbsent) {
@@ -27,7 +29,24 @@ const Chat = () => {
 
 		if (userData?.user && userData.socket) {
 			userData.socket.emit('add-user', userData.user._id);
+
+			userData.socket.on('connect', () => {
+				// When the client connects, send an online message to the server
+				userData.socket.emit('online', userData.user?._id);
+			});
 		}
+		// userData?.socket.on('disconnect', () => {
+		// 	userData?.socket.emit('leave', userData.user?._id);
+		// });
+
+		// userData?.socket.on('disconnect', () => {
+		// 	console.log('disconnected from the server');
+		// 	userData?.socket.emit('client-disconnect', userData.user?._id);
+		// });
+
+		return () => {
+			userData?.socket.close();
+		};
 	}, [userData, navigate]);
 
 	if (!userData?.user) return <div>Loading...</div>;

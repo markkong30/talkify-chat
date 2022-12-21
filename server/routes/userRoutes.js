@@ -2,6 +2,7 @@ import express from 'express';
 import {
 	getAllUsers,
 	setAvatar,
+	updateOnlineStatus,
 	signIn,
 	signOut,
 	signUp
@@ -16,6 +17,7 @@ router.post('/signup', signUp);
 router.post('/signin', signIn);
 router.post('/signout', signOut);
 router.post('/setAvatar/:id', setAvatar);
+router.put('/status', updateOnlineStatus);
 
 // chat
 router.get('/allUsers', getAllUsers);

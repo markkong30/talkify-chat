@@ -16,6 +16,7 @@ export const getAvatarAPI = () =>
 		process.env.REACT_APP_MULTIAVATAR_KEY
 	}`;
 export const allUsersAPI = combineURL('/auth/allUsers');
+export const updateOnlineStatusAPI = combineURL('/auth/status');
 
 // chat message
 export const sendMessageAPI = combineURL('/message/send');
