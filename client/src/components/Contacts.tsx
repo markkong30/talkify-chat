@@ -1,8 +1,7 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { User } from '../types';
 import logo from '../assets/logo.svg';
-import classNames from 'classnames';
 import { convertStringToBase64 } from '../utils/helpers';
 
 type Props = {
@@ -28,11 +27,9 @@ const Contacts: React.FC<Props> = ({
 			</div>
 			<div className="contacts">
 				{contacts?.map((contact, i) => (
-					<div
-						className={classNames(
-							'contact',
-							currentChatUserId === contact._id && 'contact--active'
-						)}
+					<Contact
+						isActive={currentChatUserId === contact._id}
+						isOnline={contact.online}
 						key={contact._id}
 						onClick={() => setCurrentChatUserId(contact._id)}
 					>
@@ -41,8 +38,9 @@ const Contacts: React.FC<Props> = ({
 						</div>
 						<div className="username">
 							<h3>{contact.username}</h3>
+							<div className="status" />
 						</div>
-					</div>
+					</Contact>
 				))}
 			</div>
 			<div className="current-user">
@@ -56,6 +54,10 @@ const Contacts: React.FC<Props> = ({
 		</Container>
 	);
 };
+
+const statusBorder = css`
+	border: 1px solid ${({ theme }) => theme.border.gray};
+`;
 
 const Container = styled.div`
 	display: grid;
@@ -99,35 +101,6 @@ const Container = styled.div`
 				}
 			}
 		}
-
-		.contact {
-			background-color: ${({ theme }) => theme.background.lightGray};
-			min-height: 5rem;
-			width: 90%;
-			cursor: pointer;
-			border-radius: 0.2rem;
-			padding: 0.4rem;
-			display: flex;
-			align-items: center;
-			gap: 1rem;
-			transition: 0.3s ease-in-out;
-
-			&--active {
-				background-color: ${({ theme }) => theme.background.light};
-			}
-
-			.avatar {
-				img {
-					height: 3rem;
-				}
-			}
-		}
-
-		.username {
-			h3 {
-				color: ${({ theme }) => theme.text.primary};
-			}
-		}
 	}
 
 	.current-user {
@@ -158,6 +131,54 @@ const Container = styled.div`
 			h3 {
 				font-size: 1rem;
 			}
+		}
+	}
+`;
+
+type StyledProp = {
+	isOnline: boolean;
+	isActive: boolean;
+};
+
+const Contact = styled.div<StyledProp>`
+	background-color: ${({ theme }) => theme.background.lightGray};
+	min-height: 5rem;
+	width: 90%;
+	cursor: pointer;
+	border-radius: 0.2rem;
+	padding: 0.4rem;
+	display: flex;
+	align-items: center;
+	gap: 1rem;
+	transition: 0.3s ease-in-out;
+	background-color: ${({ isActive, theme }) =>
+		isActive && theme.background.light};
+
+	.avatar {
+		img {
+			height: 3rem;
+		}
+	}
+
+	.username {
+		position: relative;
+
+		h3 {
+			color: ${({ theme }) => theme.text.primary};
+		}
+
+		.status {
+			position: absolute;
+			top: -15px;
+			right: -20px;
+			background: ${({ isOnline }) =>
+				isOnline && 'linear-gradient(to right, #00ff00, #00cc00)'};
+			border-radius: 50%;
+			width: 15px;
+			height: 15px;
+			display: inline-block;
+			box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+			${({ isOnline }) => !isOnline && statusBorder}
 		}
 	}
 `;

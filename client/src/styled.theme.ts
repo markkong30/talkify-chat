@@ -17,6 +17,7 @@ export const globalThemes = {
 	},
 	border: {
 		primary: '#4e0eff',
-		light: '#997af0'
+		light: '#997af0',
+		gray: '#808080'
 	}
 };

@@ -18,6 +18,7 @@ app.use(
 	cors({
 		origin: [
 			'http://localhost:3000',
+			'http://localhost:3001',
 			'https://talkify.up.railway.app',
 			'https://talkify-chat.netlify.app'
 		],
@@ -49,6 +50,7 @@ const io = new Server(server, {
 	cors: {
 		origin: [
 			'http://localhost:3000',
+			'http://localhost:3001',
 			'https://talkify.up.railway.app',
 			'https://talkify-chat.netlify.app'
 		],
