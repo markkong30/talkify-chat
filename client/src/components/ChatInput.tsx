@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import Picker, { EmojiClickData } from 'emoji-picker-react';
 import { IoMdSend } from 'react-icons/io';
 import { BsEmojiSmileFill } from 'react-icons/bs';
@@ -21,17 +21,45 @@ const ChatInput: React.FC<Props> = ({
 	newMessage,
 	setNewMessage
 }) => {
+	const inputRef = useRef<HTMLInputElement>(null);
+	const pickerRef = useRef<HTMLDivElement>(null);
+	const menuHandlerRef = useRef<HTMLDivElement>(null);
+
+	useEffect(() => {
+		const autoClose = (e: PointerEvent) => {
+			const target = e.target as Node;
+
+			if (showEmojiPicker) {
+				if (
+					!pickerRef.current?.contains(target) &&
+					!menuHandlerRef.current?.contains(target)
+				) {
+					setShowEmojiPicker(false);
+					inputRef.current?.focus();
+				}
+			}
+		};
+
+		window.addEventListener('click', autoClose);
+
+		return () => {
+			window.removeEventListener('click', autoClose);
+		};
+	}, [showEmojiPicker]);
+
 	const handleEmojiClick = (emoji: EmojiClickData) => {
 		setNewMessage(newMessage + emoji.emoji);
 		setShowEmojiPicker(false);
+
+		inputRef.current?.focus();
 	};
 
 	return (
 		<Container>
-			<div className="emoji">
+			<div className="emoji" ref={menuHandlerRef}>
 				<BsEmojiSmileFill onClick={() => setShowEmojiPicker((prev) => !prev)} />
 				{showEmojiPicker && (
-					<div className="picker">
+					<div className="picker" ref={pickerRef}>
 						<Picker theme={Theme.DARK} onEmojiClick={handleEmojiClick} />
 					</div>
 				)}
@@ -45,6 +73,7 @@ const ChatInput: React.FC<Props> = ({
 				}}
 			>
 				<input
+					ref={inputRef}
 					type="text"
 					name="message"
 					placeholder="type your message here"
