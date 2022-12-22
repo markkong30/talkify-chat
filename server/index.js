@@ -108,9 +108,9 @@ io.on('connection', (socket) => {
 	});
 });
 
-const updateUserOnlineStatus = async (userId) => {
+const updateUserOnlineStatus = (userId) => {
 	if (userId) {
-		await User.findByIdAndUpdate(
+		User.findByIdAndUpdate(
 			userId,
 			{ online: false, lastSeen: new Date() },
 			{ new: true },
