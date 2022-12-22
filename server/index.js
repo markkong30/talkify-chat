@@ -92,32 +92,39 @@ io.on('connection', (socket) => {
 		}
 	});
 
-	socket.on('client-disconnect', (userId) => {
-		if (userId) {
-			User.findByIdAndUpdate(
-				userId,
-				{ online: false, lastSeen: new Date() },
-				{ new: true },
-				(error, user) => {
-					if (error) {
-						console.error(error);
-					} else {
-						console.log(user.online);
-						io.emit('user-status-update', {
-							online: user.online,
-							_id: user._id,
-							lastSeen: user.lastSeen
-						});
-					}
-				}
-			);
-		}
-	});
+	socket.on('disconnect', () => {
+		// When a client disconnects, update their online status to false and
+		// broadcast the updated status to all connected clients
+		let userId;
 
-	// socket.on('disconnect', () => {
-	// 	// When a client disconnects, update their online status to false and
-	// 	// broadcast the updated status to all connected clients
-	// 	console.log('here');
-	// 	io.emit('user-status-update', { message: 'someone quit' });
-	// });
+		onlineUsers.forEach((value, key) => {
+			if (value === socket.id) {
+				userId = key;
+				return;
+			}
+		});
+
+		updateUserOnlineStatus(userId);
+	});
 });
+
+const updateUserOnlineStatus = async (userId) => {
+	if (userId) {
+		await User.findByIdAndUpdate(
+			userId,
+			{ online: false, lastSeen: new Date() },
+			{ new: true },
+			(error, user) => {
+				if (error) {
+					console.error(error);
+				} else {
+					io.emit('user-status-update', {
+						online: user.online,
+						_id: user._id,
+						lastSeen: user.lastSeen
+					});
+				}
+			}
+		);
+	}
+};

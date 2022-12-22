@@ -2,11 +2,7 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { Socket } from 'socket.io-client';
 import { Message } from '../../types';
-import {
-	getAllMessagesAPI,
-	sendMessageAPI,
-	updateOnlineStatusAPI
-} from '../../utils/APIRoutes';
+import { getAllMessagesAPI, sendMessageAPI } from '../../utils/APIRoutes';
 
 export const useChat = (userId: string, chatUserId: string, socket: Socket) => {
 	const [messages, setMessages] = useState<Message[]>([]);
@@ -36,15 +32,6 @@ export const useChat = (userId: string, chatUserId: string, socket: Socket) => {
 			});
 		}
 	}, [socket, userId]);
-
-	const updateUserOnlineStatus = async (userId: string) => {
-		const { data } = await axios.put(
-			updateOnlineStatusAPI,
-			{ userId },
-			{ withCredentials: true }
-		);
-		// console.log(data);
-	};
 
 	const updateMessages = (message: Message) => {
 		setMessages((prev) => [...prev, message]);

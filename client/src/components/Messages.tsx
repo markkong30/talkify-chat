@@ -53,7 +53,9 @@ const Messages: React.FC<Props> = ({ messages }) => {
 				</MessageContainer>
 			))}
 			<AnimatePresence>
-				{!inView && <DownArrow handleClick={scrollLastMessageIntoView} />}
+				{!inView && !!messages.length && (
+					<DownArrow handleClick={scrollLastMessageIntoView} />
+				)}
 			</AnimatePresence>
 		</Container>
 	);
