@@ -6,6 +6,8 @@ export type User = {
 	username: string;
 	hasAvatar: boolean;
 	avatar: string;
+	online: boolean;
+	lastSeen: Date;
 };
 
 type UserContext = {

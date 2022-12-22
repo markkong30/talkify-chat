@@ -3,10 +3,9 @@ import { Socket } from 'socket.io-client';
 import styled from 'styled-components';
 import { useChat } from '../pages/Chat/useChat';
 import { User } from '../types';
-import { convertStringToBase64 } from '../utils/helpers';
+import ChatHeader from './ChatHeader';
 import ChatInput from './ChatInput';
 import Messages from './Messages';
-import SignOut from './SignOut';
 
 type Props = {
 	user: User;
@@ -25,20 +24,7 @@ const ChatContainer: React.FC<Props> = ({ user, currentChatUser, socket }) => {
 
 	return (
 		<Container>
-			<div className="header">
-				<div className="user-details">
-					<div className="avatar">
-						<img
-							src={convertStringToBase64(currentChatUser.avatar)}
-							alt="avatar"
-						/>
-					</div>
-					<div className="username">
-						<h3>{currentChatUser.username}</h3>
-					</div>
-				</div>
-				<SignOut />
-			</div>
+			<ChatHeader currentChatUser={currentChatUser} />
 			<Messages messages={messages} />
 			<ChatInput
 				sendMessage={sendMessage}
@@ -52,36 +38,11 @@ const ChatContainer: React.FC<Props> = ({ user, currentChatUser, socket }) => {
 };
 
 const Container = styled.div`
+	position: relative;
 	display: flex;
 	flex-direction: column;
 	padding-top: 1rem;
 	overflow: hidden;
-
-	.header {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		width: 100%;
-		padding: 0 2rem;
-
-		.user-details {
-			display: flex;
-			align-items: center;
-			gap: 1rem;
-
-			.avatar {
-				img {
-					height: 3rem;
-				}
-			}
-
-			.username {
-				h3 {
-					color: ${({ theme }) => theme.text.primary};
-				}
-			}
-		}
-	}
 `;
 
 export default ChatContainer;

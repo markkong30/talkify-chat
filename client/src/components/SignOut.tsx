@@ -21,6 +21,7 @@ const SignOut = () => {
 				}
 			);
 			if (data) {
+				userData?.socket.emit('client-disconnect', userData.user?._id);
 				userData?.setUser(undefined);
 			}
 		} catch (err) {

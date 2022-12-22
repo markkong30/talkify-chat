@@ -29,20 +29,7 @@ const Chat = () => {
 
 		if (userData?.user && userData.socket) {
 			userData.socket.emit('add-user', userData.user._id);
-
-			userData.socket.on('connect', () => {
-				// When the client connects, send an online message to the server
-				userData.socket.emit('online', userData.user?._id);
-			});
 		}
-		// userData?.socket.on('disconnect', () => {
-		// 	userData?.socket.emit('leave', userData.user?._id);
-		// });
-
-		// userData?.socket.on('disconnect', () => {
-		// 	console.log('disconnected from the server');
-		// 	userData?.socket.emit('client-disconnect', userData.user?._id);
-		// });
 
 		return () => {
 			userData?.socket.close();

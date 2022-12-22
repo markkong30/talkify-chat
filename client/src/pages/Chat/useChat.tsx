@@ -34,12 +34,6 @@ export const useChat = (userId: string, chatUserId: string, socket: Socket) => {
 					_id: message._id
 				});
 			});
-
-			socket.on('disconnect', () => {
-				console.log('disconnected from the server');
-				socket.emit('client-disconnect', userId);
-				updateUserOnlineStatus(userId);
-			});
 		}
 	}, [socket, userId]);
 
@@ -49,7 +43,7 @@ export const useChat = (userId: string, chatUserId: string, socket: Socket) => {
 			{ userId },
 			{ withCredentials: true }
 		);
-		console.log(data);
+		// console.log(data);
 	};
 
 	const updateMessages = (message: Message) => {

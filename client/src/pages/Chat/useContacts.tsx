@@ -26,7 +26,6 @@ export const useContacts = (isUser: boolean, socket: Socket | undefined) => {
 
 		if (isUser) {
 			getAllUsers();
-			// setOnlineStatus();
 		}
 	}, [isUser, socket]);
 

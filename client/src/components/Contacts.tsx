@@ -95,7 +95,7 @@ const Container = styled.div`
 				border-radius: 1rem;
 
 				&:hover {
-					background-color: #c5c5c5;
+					background-color: ${({ theme }) => theme.background.darkWhite};
 				}
 			}
 		}
