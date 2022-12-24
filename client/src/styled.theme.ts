@@ -2,6 +2,7 @@ export const globalThemes = {
 	background: {
 		primary: '#4e0eff',
 		light: '#997af0',
+		lightPurple: '#bfaaff',
 		dark: '#00000076',
 		semiDark: '#131324',
 		lightGray: '#ffffff39',

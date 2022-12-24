@@ -11,12 +11,16 @@ type Props = {
 	messages: Message[];
 	setShouldType: (boolean: boolean) => void;
 	shouldType: boolean;
+	loadingAI: boolean;
+	setLoadingAI: (boolean: boolean) => void;
 };
 
 const AIBotMessages: React.FC<Props> = ({
 	messages,
 	setShouldType,
-	shouldType
+	shouldType,
+	loadingAI,
+	setLoadingAI
 }) => {
 	const [isScrolling, setIsScrolling] = useState(false);
 	const [top, setTop] = useState<number | null>(null);
@@ -83,6 +87,7 @@ const AIBotMessages: React.FC<Props> = ({
 								setShouldType={setShouldType}
 								isScrolling={isScrolling}
 								setPreviousTop={setPreviousTop}
+								setLoadingAI={setLoadingAI}
 							/>
 						) : (
 							<p>{message.message}</p>
@@ -137,6 +142,7 @@ const MessageContainer = styled.div<StyledPropMessage>`
 	.content {
 		max-width: 80%;
 		overflow-wrap: break-word;
+		white-space: pre-wrap;
 		padding: 1rem;
 		font-size: 1.1rem;
 		border-radius: 1rem;

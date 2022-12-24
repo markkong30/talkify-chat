@@ -47,7 +47,7 @@ export const formikHelper = {
 		email: Yup.string().email('Invalid email address').required('Required'),
 		username: Yup.string()
 			.min(3, 'Username must be at least 3 characters')
-			.max(20, 'Username must be no more than 20 characters')
+			.max(10, 'Username must be no more than 10 characters')
 			.required('Required'),
 		password: Yup.string()
 			.min(6, 'Password must be at least 6 characters')
@@ -65,8 +65,8 @@ export const formikHelper = {
 	) => {
 		actions.setSubmitting(true);
 		const user = {
-			username: values.username,
-			email: values.email,
+			username: values.username.trim(),
+			email: values.email.trim(),
 			password: values.password
 		};
 

@@ -98,7 +98,7 @@ const MessageContainer = styled.div<StyledPropMessage>`
 	.content {
 		max-width: 40%;
 		overflow-wrap: break-word;
-		white-space: pre;
+		white-space: pre-wrap;
 		padding: 1rem;
 		font-size: 1.1rem;
 		border-radius: 1rem;

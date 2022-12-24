@@ -25,9 +25,14 @@ const ChatContainer: React.FC<Props> = ({ user, currentChatUser, socket }) => {
 		currentChatUser._id,
 		socket
 	);
-	const { AIMessages, sendAIMessage, setShouldType, shouldType } = useAIChat(
-		user._id
-	);
+	const {
+		AIMessages,
+		sendAIMessage,
+		setShouldType,
+		shouldType,
+		loadingAI,
+		setLoadingAI
+	} = useAIChat();
 
 	return (
 		<Container ref={chatContainerRef}>
@@ -37,6 +42,8 @@ const ChatContainer: React.FC<Props> = ({ user, currentChatUser, socket }) => {
 					messages={AIMessages}
 					setShouldType={setShouldType}
 					shouldType={shouldType}
+					setLoadingAI={setLoadingAI}
+					loadingAI={loadingAI}
 				/>
 			) : (
 				<Messages messages={messages} />
@@ -49,6 +56,7 @@ const ChatContainer: React.FC<Props> = ({ user, currentChatUser, socket }) => {
 				setShowEmojiPicker={setShowEmojiPicker}
 				newMessage={newMessage}
 				setNewMessage={setNewMessage}
+				loadingAI={loadingAI}
 			/>
 		</Container>
 	);

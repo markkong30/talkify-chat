@@ -16,6 +16,7 @@ type Props = {
 	newMessage: string;
 	setNewMessage: (msg: string) => void;
 	isAIChat: boolean;
+	loadingAI: boolean;
 };
 const ChatInput: React.FC<Props> = ({
 	sendMessage,
@@ -24,7 +25,8 @@ const ChatInput: React.FC<Props> = ({
 	setShowEmojiPicker,
 	newMessage,
 	setNewMessage,
-	isAIChat
+	isAIChat,
+	loadingAI
 }) => {
 	const inputRef = useRef<HTMLTextAreaElement>(null);
 	const pickerRef = useRef<HTMLDivElement>(null);
@@ -101,7 +103,11 @@ const ChatInput: React.FC<Props> = ({
 						}
 					}}
 				/>
-				<button className="submit" type="submit">
+				<button
+					className="submit"
+					type="submit"
+					disabled={isAIChat && loadingAI ? true : false}
+				>
 					<IoMdSend />
 				</button>
 			</form>
@@ -196,6 +202,11 @@ const Container = styled.div`
 			svg {
 				font-size: 1.5rem;
 				color: ${({ theme }) => theme.text.primary};
+			}
+
+			&:disabled {
+				cursor: not-allowed;
+				background-color: ${({ theme }) => theme.background.lightPurple};
 			}
 		}
 	}
