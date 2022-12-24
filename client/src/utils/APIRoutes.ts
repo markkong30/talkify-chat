@@ -21,3 +21,4 @@ export const updateOnlineStatusAPI = combineURL('/auth/status');
 // chat message
 export const sendMessageAPI = combineURL('/message/send');
 export const getAllMessagesAPI = combineURL('/message');
+export const getAIMessageAPI = combineURL('/message/getai');

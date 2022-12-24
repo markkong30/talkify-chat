@@ -4,24 +4,29 @@ import { IoMdSend } from 'react-icons/io';
 import { BsEmojiSmileFill } from 'react-icons/bs';
 import styled from 'styled-components';
 import { Theme } from 'emoji-picker-react';
+import TextareaAutosize from 'react-textarea-autosize';
 
 type Props = {
 	sendMessage: (message: string) => void;
+	sendAIMessage: (message: string) => void;
 	showEmojiPicker: boolean;
 	setShowEmojiPicker: (
 		value: boolean | ((prevState: boolean) => boolean)
 	) => void;
 	newMessage: string;
 	setNewMessage: (msg: string) => void;
+	isAIChat: boolean;
 };
 const ChatInput: React.FC<Props> = ({
 	sendMessage,
+	sendAIMessage,
 	showEmojiPicker,
 	setShowEmojiPicker,
 	newMessage,
-	setNewMessage
+	setNewMessage,
+	isAIChat
 }) => {
-	const inputRef = useRef<HTMLInputElement>(null);
+	const inputRef = useRef<HTMLTextAreaElement>(null);
 	const pickerRef = useRef<HTMLDivElement>(null);
 	const menuHandlerRef = useRef<HTMLDivElement>(null);
 
@@ -54,6 +59,22 @@ const ChatInput: React.FC<Props> = ({
 		inputRef.current?.focus();
 	};
 
+	const handleSubmit = (
+		e:
+			| React.FormEvent<HTMLFormElement>
+			| React.KeyboardEvent<HTMLTextAreaElement>
+	) => {
+		e.preventDefault();
+		if (!newMessage.trim().length) return;
+
+		if (isAIChat) {
+			sendAIMessage(newMessage);
+		} else {
+			sendMessage(newMessage);
+		}
+		setNewMessage('');
+	};
+
 	return (
 		<Container>
 			<div className="emoji" ref={menuHandlerRef}>
@@ -64,22 +85,21 @@ const ChatInput: React.FC<Props> = ({
 					</div>
 				)}
 			</div>
-			<form
-				className="input"
-				onSubmit={(e) => {
-					e.preventDefault();
-					sendMessage(newMessage);
-					setNewMessage('');
-				}}
-			>
-				<input
+			<form className="input" onSubmit={handleSubmit}>
+				<TextareaAutosize
 					ref={inputRef}
-					type="text"
+					autoFocus
+					className="textarea"
 					name="message"
 					placeholder="type your message here"
 					autoComplete="off"
 					value={newMessage}
 					onChange={(e) => setNewMessage(e.target.value)}
+					onKeyDown={(e) => {
+						if (e.key === 'Enter' && !e.shiftKey) {
+							handleSubmit(e);
+						}
+					}}
 				/>
 				<button className="submit" type="submit">
 					<IoMdSend />
@@ -137,10 +157,11 @@ const Container = styled.div`
 	.input {
 		display: flex;
 		align-items: center;
+		justify-content: center;
 		gap: 1rem;
-		height: 3rem;
+		height: 3.5rem;
 
-		input {
+		.textarea {
 			height: 100%;
 			flex-grow: 1;
 			border-radius: 2rem;
@@ -149,6 +170,8 @@ const Container = styled.div`
 			border: none;
 			padding-left: 1rem;
 			font-size: 1.2rem;
+			resize: none;
+			padding: 1rem;
 
 			&::selection {
 				background-color: ${({ theme }) => theme.background.light};

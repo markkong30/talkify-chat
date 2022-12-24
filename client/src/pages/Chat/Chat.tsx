@@ -16,8 +16,6 @@ const Chat = () => {
 		(contact) => contact._id === currentChatUserId
 	);
 
-	console.log(contacts);
-
 	useEffect(() => {
 		if (userData?.isUserAbsent) {
 			return navigate('/signin');

@@ -3,6 +3,8 @@ import styled, { css } from 'styled-components';
 import { User } from '../types';
 import logo from '../assets/logo.svg';
 import { convertStringToBase64 } from '../utils/helpers';
+import { aiBotId } from '../pages/Chat/bot.helpers';
+import { AiFillStar } from 'react-icons/ai';
 
 type Props = {
 	contacts: User[];
@@ -38,7 +40,13 @@ const Contacts: React.FC<Props> = ({
 						</div>
 						<div className="username">
 							<h3>{contact.username}</h3>
-							<div className="status" />
+							{contact._id === aiBotId ? (
+								<div className="bot-status">
+									<AiFillStar color="gold" fontSize={20} />
+								</div>
+							) : (
+								<div className="status" />
+							)}
 						</div>
 					</Contact>
 				))}
@@ -179,6 +187,12 @@ const Contact = styled.div<StyledProp>`
 			display: inline-block;
 			box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 			${({ isOnline }) => !isOnline && statusBorder}
+		}
+
+		.bot-status {
+			position: absolute;
+			top: -15px;
+			right: -20px;
 		}
 	}
 `;
