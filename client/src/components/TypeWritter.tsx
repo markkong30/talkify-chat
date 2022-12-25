@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useTypewriter } from 'react-simple-typewriter';
 import { useInView } from 'react-intersection-observer';
+import { aiLoadingMessage } from '../pages/Chat/bot.helpers';
 
 type Props = {
 	message: string;
@@ -32,7 +33,7 @@ const TypeWritter: React.FC<Props> = ({
 	}, [inView, entry?.target, isScrolling]);
 
 	const [text] = useTypewriter(
-		message === '...'
+		message === aiLoadingMessage
 			? loadingOptions
 			: {
 					words: [message],

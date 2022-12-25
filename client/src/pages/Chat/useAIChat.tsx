@@ -1,13 +1,27 @@
 import axios from 'axios';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Message } from '../../types';
 import { getAIMessageAPI } from '../../utils/APIRoutes';
+import { aiLoadingMessage } from './bot.helpers';
 
-export const useAIChat = () => {
+export const useAIChat = (username: string) => {
 	const [AIMessages, setAIMessages] = useState<Message[]>([]);
-	const [shouldType, setShouldType] = useState(false);
+	const [shouldType, setShouldType] = useState(true);
 	const [fetchCount, setFetchCount] = useState(0);
 	const [loadingAI, setLoadingAI] = useState(false);
+
+	useEffect(() => {
+		// set welcome message
+		setTimeout(() => {
+			setAIMessages([
+				{
+					fromSelf: false,
+					message: `Hi ${username}, how can I help you today?`,
+					_id: crypto.randomUUID()
+				}
+			]);
+		}, 1000);
+	}, [username]);
 
 	const getAIMessage = async (message: string) => {
 		try {
@@ -42,7 +56,7 @@ export const useAIChat = () => {
 			},
 			{
 				fromSelf: false,
-				message: '...',
+				message: aiLoadingMessage,
 				_id: crypto.randomUUID()
 			}
 		];

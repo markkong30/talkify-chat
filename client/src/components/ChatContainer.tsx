@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { Socket } from 'socket.io-client';
 import styled from 'styled-components';
 import { aiBotId } from '../pages/Chat/bot.helpers';
@@ -17,7 +17,6 @@ type Props = {
 };
 
 const ChatContainer: React.FC<Props> = ({ user, currentChatUser, socket }) => {
-	const chatContainerRef = useRef<HTMLDivElement>(null);
 	const [showEmojiPicker, setShowEmojiPicker] = useState(false);
 	const [newMessage, setNewMessage] = useState('');
 	const { messages, sendMessage } = useChat(
@@ -32,10 +31,10 @@ const ChatContainer: React.FC<Props> = ({ user, currentChatUser, socket }) => {
 		shouldType,
 		loadingAI,
 		setLoadingAI
-	} = useAIChat();
+	} = useAIChat(user.username);
 
 	return (
-		<Container ref={chatContainerRef}>
+		<Container>
 			<ChatHeader currentChatUser={currentChatUser} />
 			{currentChatUser._id === aiBotId ? (
 				<AIBotMessages
