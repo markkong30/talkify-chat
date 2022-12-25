@@ -6,6 +6,7 @@ import { UserContext } from '../../context/UserContext';
 import Contacts from '../../components/Contacts';
 import { useContacts } from './useContacts';
 import ChatContainer from '../../components/ChatContainer';
+import Spinner from '../../utils/Spinner';
 
 const Chat = () => {
 	const navigate = useNavigate();
@@ -34,7 +35,7 @@ const Chat = () => {
 		};
 	}, [userData, navigate]);
 
-	if (!userData?.user) return <div>Loading...</div>;
+	if (!userData?.user) return <Spinner />;
 
 	return (
 		<Container>

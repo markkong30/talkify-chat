@@ -4,11 +4,11 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { getAvatarAPI, setAvatarAPI } from '../../utils/APIRoutes';
-import loader from '../../assets/loader.gif';
 import { Buffer } from 'buffer';
 import { UserContext } from '../../context/UserContext';
 import { toast } from 'react-toastify';
 import { convertStringToBase64 } from '../../utils/helpers';
+import Spinner from '../../utils/Spinner';
 
 const SetAvatar: React.FC = () => {
 	const navigate = useNavigate();
@@ -55,13 +55,7 @@ const SetAvatar: React.FC = () => {
 		}
 	};
 
-	if (isLoading) {
-		return (
-			<Container>
-				<img src={loader} alt="loading" className="loader" />
-			</Container>
-		);
-	}
+	if (isLoading) return <Spinner />;
 
 	return (
 		<>

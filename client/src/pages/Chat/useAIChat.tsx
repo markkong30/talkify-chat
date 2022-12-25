@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 import { Message } from '../../types';
 import { getAIMessageAPI } from '../../utils/APIRoutes';
 import { aiLoadingMessage } from './bot.helpers';
@@ -43,6 +44,9 @@ export const useAIChat = (username: string) => {
 			console.log(err);
 			if (fetchCount <= 3) {
 				getAIMessage(message);
+			} else {
+				toast.error('Error occured, please try again!');
+				setFetchCount(0);
 			}
 		}
 	};
