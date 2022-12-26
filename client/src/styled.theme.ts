@@ -1,4 +1,4 @@
-export const globalThemes = {
+export const globalThemes: GlobalThemes = {
 	background: {
 		primary: '#4e0eff',
 		light: '#997af0',
@@ -21,4 +21,10 @@ export const globalThemes = {
 		light: '#997af0',
 		gray: '#808080'
 	}
+};
+
+export type GlobalThemes = {
+	background: any;
+	text: any;
+	border: any;
 };

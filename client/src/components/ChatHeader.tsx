@@ -6,9 +6,10 @@ import SignOut from './SignOut';
 
 type Props = {
 	currentChatUser: User;
+	openModal: () => void;
 };
 
-const ChatHeader: React.FC<Props> = ({ currentChatUser }) => {
+const ChatHeader: React.FC<Props> = ({ currentChatUser, openModal }) => {
 	return (
 		<Container>
 			<div className="user-details">
@@ -27,7 +28,7 @@ const ChatHeader: React.FC<Props> = ({ currentChatUser }) => {
 					</p>
 				</div>
 			</div>
-			<SignOut />
+			<SignOut openModal={openModal} />
 		</Container>
 	);
 };

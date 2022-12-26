@@ -21,7 +21,7 @@ export const useAIChat = (username: string) => {
 					_id: crypto.randomUUID()
 				}
 			]);
-		}, 1000);
+		}, 1500);
 	}, [username]);
 
 	const getAIMessage = async (message: string) => {
@@ -43,6 +43,7 @@ export const useAIChat = (username: string) => {
 		} catch (err) {
 			console.log(err);
 			if (fetchCount <= 3) {
+				setFetchCount((prev) => prev + 1);
 				getAIMessage(message);
 			} else {
 				toast.error('Error occured, please try again!');

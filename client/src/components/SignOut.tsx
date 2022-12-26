@@ -1,36 +1,14 @@
-import axios from 'axios';
-import React, { useContext } from 'react';
+import React from 'react';
 import { BiPowerOff } from 'react-icons/bi';
-import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
 import styled from 'styled-components';
-import { UserContext } from '../context/UserContext';
-import { signOutAPI } from '../utils/APIRoutes';
 
-const SignOut = () => {
-	const navigate = useNavigate();
-	const userData = useContext(UserContext);
+type Props = {
+	openModal: () => void;
+};
 
-	const handleSignOut = async () => {
-		try {
-			const { data } = await axios.post(
-				signOutAPI,
-				{},
-				{
-					withCredentials: true
-				}
-			);
-			if (data) {
-				userData?.setUser(undefined);
-			}
-		} catch (err) {
-			toast.error('Error... Please try again');
-		} finally {
-			navigate('/signin');
-		}
-	};
+const SignOut: React.FC<Props> = ({ openModal }) => {
 	return (
-		<Button onClick={handleSignOut}>
+		<Button onClick={openModal}>
 			<BiPowerOff />
 		</Button>
 	);

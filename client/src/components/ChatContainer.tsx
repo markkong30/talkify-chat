@@ -4,7 +4,9 @@ import styled from 'styled-components';
 import { aiBotId } from '../pages/Chat/bot.helpers';
 import { useAIChat } from '../pages/Chat/useAIChat';
 import { useChat } from '../pages/Chat/useChat';
+import { useSignOut } from '../pages/Chat/useSignOut';
 import { User } from '../types';
+import ModalComp from '../utils/Modal';
 import AIBotMessages from './AIBotMessages';
 import ChatHeader from './ChatHeader';
 import ChatInput from './ChatInput';
@@ -17,7 +19,9 @@ type Props = {
 };
 
 const ChatContainer: React.FC<Props> = ({ user, currentChatUser, socket }) => {
+	const [isOpenModal, setIsOpenModal] = useState(false);
 	const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+	const { handleSignOut } = useSignOut();
 	const [newMessage, setNewMessage] = useState('');
 	const { messages, sendMessage } = useChat(
 		user._id,
@@ -35,7 +39,10 @@ const ChatContainer: React.FC<Props> = ({ user, currentChatUser, socket }) => {
 
 	return (
 		<Container>
-			<ChatHeader currentChatUser={currentChatUser} />
+			<ChatHeader
+				currentChatUser={currentChatUser}
+				openModal={() => setIsOpenModal(true)}
+			/>
 			{currentChatUser._id === aiBotId ? (
 				<AIBotMessages
 					messages={AIMessages}
@@ -56,6 +63,12 @@ const ChatContainer: React.FC<Props> = ({ user, currentChatUser, socket }) => {
 				newMessage={newMessage}
 				setNewMessage={setNewMessage}
 				loadingAI={loadingAI}
+			/>
+			<ModalComp
+				modalTitle="Are you sure to sign out?"
+				isOpen={isOpenModal}
+				closeModal={() => setIsOpenModal(false)}
+				handleConfirm={handleSignOut}
 			/>
 		</Container>
 	);

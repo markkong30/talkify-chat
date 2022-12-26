@@ -56,7 +56,6 @@ const ChatInput: React.FC<Props> = ({
 
 	const handleEmojiClick = (emoji: EmojiClickData) => {
 		setNewMessage(newMessage + emoji.emoji);
-		setShowEmojiPicker(false);
 
 		inputRef.current?.focus();
 	};
