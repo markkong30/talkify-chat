@@ -1,14 +1,17 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Picker, { EmojiClickData } from 'emoji-picker-react';
 import { IoMdSend } from 'react-icons/io';
 import { BsEmojiSmileFill } from 'react-icons/bs';
 import styled from 'styled-components';
 import { Theme } from 'emoji-picker-react';
 import TextareaAutosize from 'react-textarea-autosize';
+import { noop } from 'lodash';
 
 type Props = {
 	sendMessage: (message: string) => void;
-	sendAIMessage: (message: string) => void;
+	sendImage: (image: string) => void;
+	preloadImage: (image: string) => void;
+	sendAIMessage?: (message: string) => void;
 	showEmojiPicker: boolean;
 	setShowEmojiPicker: (
 		value: boolean | ((prevState: boolean) => boolean)
@@ -16,21 +19,31 @@ type Props = {
 	newMessage: string;
 	setNewMessage: (msg: string) => void;
 	isAIChat: boolean;
-	loadingAI: boolean;
+	loadingAI?: boolean;
+	shouldShowImageUpload?: boolean;
+	openModal: () => void;
+	shouldCheckInput?: boolean;
 };
 const ChatInput: React.FC<Props> = ({
 	sendMessage,
-	sendAIMessage,
+	sendAIMessage = noop,
+	sendImage,
+	preloadImage,
 	showEmojiPicker,
 	setShowEmojiPicker,
 	newMessage,
 	setNewMessage,
 	isAIChat,
-	loadingAI
+	loadingAI,
+	openModal,
+	shouldShowImageUpload = false,
+	shouldCheckInput = true
 }) => {
 	const inputRef = useRef<HTMLTextAreaElement>(null);
 	const pickerRef = useRef<HTMLDivElement>(null);
 	const menuHandlerRef = useRef<HTMLDivElement>(null);
+	const [imageUrl, setImageUrl] = useState<string>('');
+	const showImageUpload = !isAIChat && shouldShowImageUpload;
 
 	useEffect(() => {
 		const autoClose = (e: PointerEvent) => {
@@ -66,7 +79,7 @@ const ChatInput: React.FC<Props> = ({
 			| React.KeyboardEvent<HTMLTextAreaElement>
 	) => {
 		e.preventDefault();
-		if (!newMessage.trim().length) return;
+		if (!newMessage.trim().length && shouldCheckInput) return;
 
 		if (isAIChat) {
 			sendAIMessage(newMessage);
@@ -76,13 +89,31 @@ const ChatInput: React.FC<Props> = ({
 		setNewMessage('');
 	};
 
+	const handleUpload = (e: any) => {
+		const reader = new FileReader();
+		const image = e.target.files[0];
+		reader.onloadend = () => {
+			// setImageUrl(reader.result as string);
+			preloadImage(reader.result as string);
+			// openModal();
+		};
+
+		reader.readAsDataURL(image);
+	};
+
 	return (
 		<Container>
-			<div className="emoji" ref={menuHandlerRef}>
+			<div className="menu-left" ref={menuHandlerRef}>
 				<BsEmojiSmileFill onClick={() => setShowEmojiPicker((prev) => !prev)} />
 				{showEmojiPicker && (
 					<div className="picker" ref={pickerRef}>
 						<Picker theme={Theme.DARK} onEmojiClick={handleEmojiClick} />
+					</div>
+				)}
+				{showImageUpload && (
+					<div className="image-upload">
+						<label htmlFor="file-input">+</label>
+						<input type="file" id="file-input" onChange={handleUpload} />
 					</div>
 				)}
 			</div>
@@ -115,18 +146,19 @@ const ChatInput: React.FC<Props> = ({
 };
 
 const Container = styled.div`
-	display: grid;
-	grid-template-columns: 5% 95%;
+	display: flex;
+	gap: 1.5rem;
 	align-items: center;
 	background-color: ${({ theme }) => theme.background.intenseDark};
-	padding: 0 2rem 0.3rem;
+	padding: 0.5rem 2rem;
+	/* height: 4.5rem; */
 
-	.emoji {
+	.menu-left {
 		position: relative;
 		display: flex;
 		align-items: center;
 		color: ${({ theme }) => theme.text.primary};
-		gap: 1rem;
+		gap: 1.5rem;
 
 		svg {
 			font-size: 1.5rem;
@@ -157,6 +189,24 @@ const Container = styled.div`
 				border-color: #9a86f3;
 			}
 		}
+
+		.image-upload {
+			font-size: 3rem;
+			color: #ffff00c8;
+			position: relative;
+
+			label {
+				position: absolute;
+				top: 0;
+				left: 0;
+				cursor: pointer;
+			}
+
+			input {
+				width: 1.5rem;
+				height: 0;
+			}
+		}
 	}
 
 	.input {
@@ -164,23 +214,20 @@ const Container = styled.div`
 		align-items: center;
 		justify-content: center;
 		gap: 1rem;
-		height: 3.5rem;
+		flex: 1;
 
 		.textarea {
-			height: 100%;
+			/* height: 100%; */
 			flex-grow: 1;
 			border-radius: 2rem;
 			background-color: ${({ theme }) => theme.background.lightGray};
 			color: ${({ theme }) => theme.text.primary};
 			border: none;
-			padding-left: 1rem;
 			font-size: 1.2rem;
 			resize: none;
 			padding: 1rem;
-
-			&::selection {
-				background-color: ${({ theme }) => theme.background.light};
-			}
+			display: flex;
+			align-items: center;
 
 			&:focus {
 				outline: none;
@@ -188,7 +235,7 @@ const Container = styled.div`
 		}
 
 		.submit {
-			height: 100%;
+			height: 3.2rem;
 			padding: 0.3rem 1.5rem;
 			border-radius: 2rem;
 			display: flex;

@@ -24,5 +24,17 @@ export type UserContextValue = UserContext | undefined;
 export type Message = {
 	_id: string;
 	message: string;
+	image?: string;
 	fromSelf: boolean;
+};
+
+export type MessageModel = {
+	_id: string;
+	message: {
+		text: string;
+		image?: string;
+		status: any;
+	};
+	from: string;
+	to: string;
 };

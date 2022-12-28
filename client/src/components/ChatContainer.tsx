@@ -23,11 +23,14 @@ const ChatContainer: React.FC<Props> = ({ user, currentChatUser, socket }) => {
 	const [showEmojiPicker, setShowEmojiPicker] = useState(false);
 	const { handleSignOut } = useSignOut();
 	const [newMessage, setNewMessage] = useState('');
-	const { messages, sendMessage } = useChat(
-		user._id,
-		currentChatUser._id,
-		socket
-	);
+	const {
+		messages,
+		sendMessage,
+		sendImage,
+		preloadImage,
+		previewModal,
+		openModal
+	} = useChat(user._id, currentChatUser._id, socket);
 	const {
 		AIMessages,
 		sendAIMessage,
@@ -56,13 +59,17 @@ const ChatContainer: React.FC<Props> = ({ user, currentChatUser, socket }) => {
 			)}
 			<ChatInput
 				isAIChat={currentChatUser._id === aiBotId}
+				shouldShowImageUpload={true}
 				sendMessage={sendMessage}
 				sendAIMessage={sendAIMessage}
 				showEmojiPicker={showEmojiPicker}
 				setShowEmojiPicker={setShowEmojiPicker}
 				newMessage={newMessage}
 				setNewMessage={setNewMessage}
+				sendImage={sendImage}
+				preloadImage={preloadImage}
 				loadingAI={loadingAI}
+				openModal={openModal}
 			/>
 			<ModalComp
 				modalTitle="Are you sure to sign out?"
@@ -70,6 +77,7 @@ const ChatContainer: React.FC<Props> = ({ user, currentChatUser, socket }) => {
 				closeModal={() => setIsOpenModal(false)}
 				handleConfirm={handleSignOut}
 			/>
+			{previewModal()}
 		</Container>
 	);
 };

@@ -1,5 +1,4 @@
 const base = process.env.REACT_APP_API_BASE;
-// const base = 'http://localhost:5000/api';
 
 const combineURL = (url: string) => base + url;
 const getRandomNumber = () => Math.round(Math.random() * 1000000);

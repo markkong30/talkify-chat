@@ -5,9 +5,7 @@ export const sendMessage = async (req, res, next) => {
 	try {
 		const { from, to, message } = req.body;
 		const data = await Message.create({
-			message: {
-				text: message
-			},
+			message,
 			users: [from, to],
 			sender: from
 		});
@@ -62,7 +60,8 @@ export const getAllMessages = async (req, res, next) => {
 		const messages = data.map((msg) => ({
 			_id: msg._id,
 			fromSelf: msg.sender.toString() === from,
-			message: msg.message.text
+			message: msg.message.text,
+			image: msg.message.image
 		}));
 
 		return res.status(200).json(messages);

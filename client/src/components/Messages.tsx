@@ -48,7 +48,8 @@ const Messages: React.FC<Props> = ({ messages }) => {
 					ref={i === lastMessageIndex ? lastMessageRef : null}
 				>
 					<div className="content">
-						<p>{message.message}</p>
+						{message.image && <img src={message.image} alt="" />}
+						{message.message && <p>{message.message}</p>}
 					</div>
 				</MessageContainer>
 			))}
@@ -96,7 +97,7 @@ const MessageContainer = styled.div<StyledPropMessage>`
 	justify-content: ${({ fromSelf }) => (fromSelf ? 'flex-end' : 'flex-start')};
 
 	.content {
-		max-width: 40%;
+		max-width: 70%;
 		overflow-wrap: break-word;
 		white-space: pre-wrap;
 		padding: 1rem;
@@ -105,6 +106,16 @@ const MessageContainer = styled.div<StyledPropMessage>`
 		color: #d1d1d1;
 		background-color: ${({ fromSelf }) =>
 			fromSelf ? '#4f04ff21' : '#9900ff20'};
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
+
+		img {
+			max-width: 100%;
+			object-fit: stretch;
+			object-position: center;
+			display: block;
+		}
 	}
 `;
 
