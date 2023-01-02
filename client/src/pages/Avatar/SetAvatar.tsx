@@ -14,7 +14,7 @@ const SetAvatar: React.FC = () => {
 	const navigate = useNavigate();
 	const userData = useContext(UserContext);
 
-	const [avatars, setAvatars] = useState([]);
+	const [avatars, setAvatars] = useState<string[]>([]);
 	const [selectedAvatar, setSelectedAvatar] = useState<number | null>(null);
 	const [isLoading, setIsLoading] = useState(true);
 
@@ -23,7 +23,7 @@ const SetAvatar: React.FC = () => {
 		if (!userData?.isAvatarAbsent) return navigate('/');
 
 		const setAvatarsFunc = async () => {
-			const avatars: any = [];
+			const avatars: string[] = [];
 
 			for (let i = 0; i < 4; i++) {
 				const { data } = await axios.get(getAvatarAPI());

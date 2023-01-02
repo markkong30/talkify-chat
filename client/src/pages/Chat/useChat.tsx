@@ -105,25 +105,23 @@ export const useChat = (userId: string, chatUserId: string, socket: Socket) => {
 		setIsOpen(true);
 	};
 
-	const previewModal = () => {
-		return (
-			<PreviewModal
-				isOpen={isOpen}
-				closeModal={() => {
-					setIsOpen(false);
-					setImageUrl('');
-				}}
-				openModal={() => setIsOpen(true)}
-				sendImage={sendImage}
-				imageUrl={imageUrl}
-				isAIChat={false}
-				sendMessage={sendMessage}
-				preloadImage={preloadImage}
-			/>
-		);
-	};
-
 	const openModal = () => setIsOpen(true);
+
+	const RenderPreviewModal = () => (
+		<PreviewModal
+			isOpen={isOpen}
+			closeModal={() => {
+				setIsOpen(false);
+				setImageUrl('');
+			}}
+			openModal={openModal}
+			sendImage={sendImage}
+			imageUrl={imageUrl}
+			isAIChat={false}
+			sendMessage={sendMessage}
+			preloadImage={preloadImage}
+		/>
+	);
 
 	return {
 		messages,
@@ -131,7 +129,7 @@ export const useChat = (userId: string, chatUserId: string, socket: Socket) => {
 		sendMessage,
 		sendImage,
 		preloadImage,
-		previewModal,
+		RenderPreviewModal,
 		openModal
 	};
 };

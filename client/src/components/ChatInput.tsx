@@ -1,7 +1,7 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import Picker, { EmojiClickData } from 'emoji-picker-react';
 import { IoMdSend } from 'react-icons/io';
-import { BsEmojiSmileFill } from 'react-icons/bs';
+import { BsEmojiSmileFill, BsImageFill } from 'react-icons/bs';
 import styled from 'styled-components';
 import { Theme } from 'emoji-picker-react';
 import TextareaAutosize from 'react-textarea-autosize';
@@ -42,7 +42,6 @@ const ChatInput: React.FC<Props> = ({
 	const inputRef = useRef<HTMLTextAreaElement>(null);
 	const pickerRef = useRef<HTMLDivElement>(null);
 	const menuHandlerRef = useRef<HTMLDivElement>(null);
-	const [imageUrl, setImageUrl] = useState<string>('');
 	const showImageUpload = !isAIChat && shouldShowImageUpload;
 
 	useEffect(() => {
@@ -89,16 +88,17 @@ const ChatInput: React.FC<Props> = ({
 		setNewMessage('');
 	};
 
-	const handleUpload = (e: any) => {
+	const handleUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const reader = new FileReader();
-		const image = e.target.files[0];
+		const image = e.target.files && e.target.files[0];
 		reader.onloadend = () => {
-			// setImageUrl(reader.result as string);
 			preloadImage(reader.result as string);
-			// openModal();
+			e.target.value = '';
 		};
 
-		reader.readAsDataURL(image);
+		if (image) {
+			reader.readAsDataURL(image);
+		}
 	};
 
 	return (
@@ -112,8 +112,15 @@ const ChatInput: React.FC<Props> = ({
 				)}
 				{showImageUpload && (
 					<div className="image-upload">
-						<label htmlFor="file-input">+</label>
-						<input type="file" id="file-input" onChange={handleUpload} />
+						<label htmlFor="file-input">
+							<BsImageFill />
+						</label>
+						<input
+							type="file"
+							id="file-input"
+							accept="image/*"
+							onChange={handleUpload}
+						/>
 					</div>
 				)}
 			</div>
@@ -151,7 +158,6 @@ const Container = styled.div`
 	align-items: center;
 	background-color: ${({ theme }) => theme.background.intenseDark};
 	padding: 0.5rem 2rem;
-	/* height: 4.5rem; */
 
 	.menu-left {
 		position: relative;
@@ -217,7 +223,6 @@ const Container = styled.div`
 		flex: 1;
 
 		.textarea {
-			/* height: 100%; */
 			flex-grow: 1;
 			border-radius: 2rem;
 			background-color: ${({ theme }) => theme.background.lightGray};

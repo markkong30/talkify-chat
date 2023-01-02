@@ -28,7 +28,7 @@ const ChatContainer: React.FC<Props> = ({ user, currentChatUser, socket }) => {
 		sendMessage,
 		sendImage,
 		preloadImage,
-		previewModal,
+		RenderPreviewModal,
 		openModal
 	} = useChat(user._id, currentChatUser._id, socket);
 	const {
@@ -77,7 +77,7 @@ const ChatContainer: React.FC<Props> = ({ user, currentChatUser, socket }) => {
 				closeModal={() => setIsOpenModal(false)}
 				handleConfirm={handleSignOut}
 			/>
-			{previewModal()}
+			<RenderPreviewModal />
 		</Container>
 	);
 };

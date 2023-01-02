@@ -99,7 +99,6 @@ const Container = styled.div`
 
 	.input-comp {
 		width: 100%;
-		/* height: 4.5rem; */
 	}
 `;
 

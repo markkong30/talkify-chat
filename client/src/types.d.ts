@@ -30,11 +30,17 @@ export type Message = {
 
 export type MessageModel = {
 	_id: string;
-	message: {
-		text: string;
-		image?: string;
-		status: any;
-	};
+	message: IMessage;
 	from: string;
 	to: string;
+};
+
+type IMessage = {
+	text: string;
+	image?: string;
+	status: {
+		sent: boolean;
+		received: boolean;
+		read: boolean;
+	};
 };

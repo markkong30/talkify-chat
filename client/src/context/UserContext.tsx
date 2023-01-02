@@ -22,7 +22,6 @@ export const UserInfo: React.FC<Props> = ({ children }) => {
 			withCredentials: true
 		})
 			.then(({ data }) => {
-				console.log(data);
 				setUser(data.user);
 			})
 			.catch((err) => {

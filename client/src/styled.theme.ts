@@ -24,7 +24,26 @@ export const globalThemes: GlobalThemes = {
 };
 
 export type GlobalThemes = {
-	background: any;
-	text: any;
-	border: any;
+	background: {
+		primary: string;
+		light: string;
+		lightPurple: string;
+		dark: string;
+		semiDark: string;
+		lightGray: string;
+		intenseDark: string;
+		darkWhite: string;
+		pureWhite: string;
+	};
+	text: {
+		primary: string;
+		secondary: string;
+		error: string;
+		dark: string;
+	};
+	border: {
+		primary: string;
+		light: string;
+		gray: string;
+	};
 };
