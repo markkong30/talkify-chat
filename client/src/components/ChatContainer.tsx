@@ -21,7 +21,7 @@ type Props = {
 const ChatContainer: React.FC<Props> = ({ user, currentChatUser, socket }) => {
 	const [isOpenModal, setIsOpenModal] = useState(false);
 	const [showEmojiPicker, setShowEmojiPicker] = useState(false);
-	const { handleSignOut } = useSignOut();
+	const { handleSignOut } = useSignOut(socket);
 	const [newMessage, setNewMessage] = useState('');
 	const {
 		messages,

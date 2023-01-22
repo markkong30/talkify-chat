@@ -56,7 +56,7 @@ export default TypeWritter;
 const loadingOptions = {
 	words: ['..............'],
 	loop: 0,
-	typeSpeed: 500,
-	deleteSpeed: 500,
+	typeSpeed: 400,
+	deleteSpeed: 400,
 	delaySpeed: 0
 };

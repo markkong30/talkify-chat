@@ -1,5 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useContext, useState } from 'react';
 import styled from 'styled-components';
 import Welcome from '../../components/Welcome';
 import { UserContext } from '../../context/UserContext';
@@ -10,7 +9,6 @@ import Spinner from '../../utils/Spinner';
 import { SocketContext } from '../../context/SocketContext';
 
 const Chat = () => {
-	const navigate = useNavigate();
 	const userData = useContext(UserContext);
 	const socketData = useContext(SocketContext);
 	const { contacts } = useContacts(!!userData?.user, socketData?.socket);
@@ -18,16 +16,6 @@ const Chat = () => {
 	const currentChatUser = contacts?.find(
 		(contact) => contact._id === currentChatUserId
 	);
-
-	useEffect(() => {
-		if (userData?.user && socketData?.socket) {
-			socketData.socket.emit('add-user', userData.user._id);
-		}
-
-		return () => {
-			socketData?.socket.close();
-		};
-	}, [userData, socketData, navigate]);
 
 	if (!userData?.user || !socketData?.socket) return <Spinner />;
 

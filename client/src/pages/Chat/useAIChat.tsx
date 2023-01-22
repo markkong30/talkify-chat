@@ -1,15 +1,57 @@
-import axios from 'axios';
+import { useMutation } from '@tanstack/react-query';
+import axios, { AxiosResponse } from 'axios';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { Message } from '../../types';
-import { getAIMessageAPI } from '../../utils/APIRoutes';
+import { getAIImageAPI, getAIMessageAPI } from '../../utils/APIRoutes';
 import { aiLoadingMessage } from './bot.helpers';
+
+const fetchAI = async (prompt: string): Promise<AxiosResponse> => {
+	const imgRegex = /^\/imagine.*/g;
+	const APIEndpoint = !!prompt.match(imgRegex)
+		? getAIImageAPI
+		: getAIMessageAPI;
+
+	return await axios.post(APIEndpoint, {
+		prompt: prompt.replace(/\/imagine /g, '')
+	});
+};
 
 export const useAIChat = (username: string) => {
 	const [AIMessages, setAIMessages] = useState<Message[]>([]);
 	const [shouldType, setShouldType] = useState(true);
-	const [fetchCount, setFetchCount] = useState(0);
-	const [loadingAI, setLoadingAI] = useState(false);
+	const [loadingAI, setLoadingAI] = useState(true);
+	const { mutate } = useMutation({
+		mutationFn: fetchAI,
+		onSuccess: ({ data }) => {
+			if (data.type === 'image') {
+				setAIMessages((prev) => [
+					...prev.slice(0, prev.length - 1),
+					{
+						fromSelf: false,
+						message: data.prompt.trim(),
+						image: data.response,
+						_id: crypto.randomUUID()
+					}
+				]);
+			} else {
+				setAIMessages((prev) => [
+					...prev.slice(0, prev.length - 1),
+					{
+						fromSelf: false,
+						message: data.response.trim(),
+						_id: data._id
+					}
+				]);
+			}
+		},
+		onError: () => {
+			toast.error('Error occured, please try again!');
+		},
+		onSettled: () => {
+			setLoadingAI(false);
+		}
+	});
 
 	useEffect(() => {
 		// set welcome message
@@ -23,34 +65,6 @@ export const useAIChat = (username: string) => {
 			]);
 		}, 1500);
 	}, [username]);
-
-	const getAIMessage = async (message: string) => {
-		try {
-			const { data } = await axios.post(getAIMessageAPI, {
-				prompt: message
-			});
-
-			setAIMessages((prev) => [
-				...prev.slice(0, prev.length - 1),
-				{
-					fromSelf: false,
-					message: data.response.trim(),
-					_id: data._id
-				}
-			]);
-
-			setFetchCount(0);
-		} catch (err) {
-			console.log(err);
-			if (fetchCount <= 3) {
-				setFetchCount((prev) => prev + 1);
-				getAIMessage(message);
-			} else {
-				toast.error('Error occured, please try again!');
-				setFetchCount(0);
-			}
-		}
-	};
 
 	const sendAIMessage = (message: string) => {
 		const messages = [
@@ -70,12 +84,12 @@ export const useAIChat = (username: string) => {
 
 		setShouldType(true);
 		setLoadingAI(true);
-		getAIMessage(message);
+
+		mutate(message);
 	};
 
 	return {
 		AIMessages,
-		getAIMessage,
 		sendAIMessage,
 		setShouldType,
 		shouldType,

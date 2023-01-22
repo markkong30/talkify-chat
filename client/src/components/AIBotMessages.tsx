@@ -6,6 +6,7 @@ import { Message } from '../types';
 import { usePrevious } from '../pages/Chat/usePrevious';
 import DownArrow from './DownArrow';
 import TypeWritter from './TypeWritter';
+import MessageContent from './MessageContent';
 
 type Props = {
 	messages: Message[];
@@ -80,8 +81,11 @@ const AIBotMessages: React.FC<Props> = ({
 					fromSelf={message.fromSelf}
 					ref={i === lastMessageIndex ? lastMessageRef : null}
 				>
-					<div className="content">
-						{i === lastMessageIndex && !message.fromSelf && shouldType ? (
+					{i === lastMessageIndex &&
+					!message.fromSelf &&
+					!message.image &&
+					shouldType ? (
+						<div className="type-writter">
 							<TypeWritter
 								message={message.message}
 								setShouldType={setShouldType}
@@ -89,10 +93,10 @@ const AIBotMessages: React.FC<Props> = ({
 								setPreviousTop={setPreviousTop}
 								setLoadingAI={setLoadingAI}
 							/>
-						) : (
-							<p>{message.message}</p>
-						)}
-					</div>
+						</div>
+					) : (
+						<MessageContent message={message} isAIGenerated></MessageContent>
+					)}
 				</MessageContainer>
 			))}
 
@@ -139,12 +143,13 @@ const MessageContainer = styled.div<StyledPropMessage>`
 	align-items: center;
 	justify-content: ${({ fromSelf }) => (fromSelf ? 'flex-end' : 'flex-start')};
 
-	.content {
-		max-width: 80%;
+	.type-writter {
+		max-width: 100%;
 		overflow-wrap: break-word;
 		white-space: pre-wrap;
 		padding: 1rem;
 		font-size: 1.1rem;
+		line-height: 1.3rem;
 		border-radius: 1rem;
 		color: #d1d1d1;
 		background-color: ${({ fromSelf }) =>

@@ -20,17 +20,17 @@ export const sendMessage = async (req, res, next) => {
 };
 
 export const getAIResponse = async (req, res, next) => {
+	const configuration = new Configuration({
+		apiKey: process.env.OPENAI_API_KEY
+	});
+	const openai = new OpenAIApi(configuration);
+
 	try {
-		const configuration = new Configuration({
-			apiKey: process.env.OPENAI_API_KEY
-		});
-
-		const openai = new OpenAIApi(configuration);
-
 		const { prompt } = req.body;
+
 		const response = await openai.createCompletion({
 			model: 'text-davinci-003',
-			prompt: `${prompt}`,
+			prompt,
 			temperature: 0, // Higher values means the model will take more risks.
 			max_tokens: 3000, // The maximum number of tokens to generate in the completion. Most models have a context length of 2048 tokens (except for the newest models, which support 4096).
 			top_p: 1, // alternative to sampling with temperature, called nucleus sampling
@@ -38,9 +38,11 @@ export const getAIResponse = async (req, res, next) => {
 			presence_penalty: 0 // Number between -2.0 and 2.0. Positive values penalize new tokens based on whether they appear in the text so far, increasing the model's likelihood to talk about new topics.
 		});
 
-		return res
-			.status(200)
-			.json({ response: response.data.choices[0].text, _id: response.data.id });
+		return res.status(200).json({
+			type: 'text',
+			response: response.data.choices[0].text,
+			_id: response.data.id
+		});
 	} catch (error) {
 		res.status(500).json(error);
 	}
@@ -67,5 +69,30 @@ export const getAllMessages = async (req, res, next) => {
 		return res.status(200).json(messages);
 	} catch (err) {
 		next(err);
+	}
+};
+
+export const getAIImage = async (req, res, next) => {
+	const configuration = new Configuration({
+		apiKey: process.env.OPENAI_API_KEY
+	});
+	const openai = new OpenAIApi(configuration);
+
+	try {
+		const { prompt } = req.body;
+		const response = await openai.createImage({
+			prompt,
+			n: 1,
+			size: '1024x1024',
+			response_format: 'b64_json'
+		});
+
+		return res.status(200).json({
+			type: 'image',
+			prompt,
+			response: response.data.data[0].b64_json
+		});
+	} catch (error) {
+		res.status(500).json(error);
 	}
 };

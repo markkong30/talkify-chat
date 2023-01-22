@@ -15,4 +15,4 @@ export const aiBotInfo = {
 	hasAvatar: true
 };
 
-export const aiLoadingMessage = '......';
+export const aiLoadingMessage = '..............';

@@ -4,7 +4,6 @@ import { Server } from 'socket.io';
 import mongoose, { connect } from 'mongoose';
 import * as dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
-import bodyParser from 'body-parser';
 import userRoutes from './routes/userRoutes.js';
 import messageRoutes from './routes/messagesRoute.js';
 import http from 'http';
@@ -28,7 +27,7 @@ app.use(
 );
 app.use(cookieParser());
 app.use(express.json({ limit: '10mb' }));
-app.use(express.urlencoded({ limit: '10mb' }));
+
 app.use('/api/auth', userRoutes);
 app.use('/api/message', messageRoutes);
 
@@ -53,7 +52,6 @@ const io = new Server(server, {
 		origin: [
 			'http://localhost:3000',
 			'http://localhost:3001',
-			'https://talkify.up.railway.app',
 			'https://talkify-chat.netlify.app'
 		],
 		credentials: true
@@ -69,7 +67,6 @@ io.on('connection', (socket) => {
 
 	socket.on('add-user', (userId) => {
 		onlineUsers.set(userId, socket.id);
-
 		User.findByIdAndUpdate(
 			userId,
 			{ online: true },

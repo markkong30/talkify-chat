@@ -10,9 +10,7 @@ export const useContacts = (isUser: boolean, socket: Socket | undefined) => {
 
 	useEffect(() => {
 		if (socket) {
-			socket.on('user-status-update', (data) => {
-				// When the 'user-status-update' event is received, update the online status of the specified user
-				console.log(data);
+			socket.on('user-status-update', () => {
 				getAllUsers();
 			});
 		}

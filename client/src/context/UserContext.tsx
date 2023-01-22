@@ -1,5 +1,11 @@
 import axios, { AxiosResponse } from 'axios';
-import { createContext, ReactNode, useEffect, useState } from 'react';
+import {
+	createContext,
+	ReactNode,
+	useContext,
+	useEffect,
+	useState
+} from 'react';
 import {
 	User,
 	UserContext as UserContextType,
@@ -8,6 +14,7 @@ import {
 import { getUserInfo } from '../utils/APIRoutes';
 import { useQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
+import { SocketContext } from './SocketContext';
 
 export const UserContext = createContext<UserContextValue>(undefined);
 
@@ -22,6 +29,7 @@ const fetchUser = async (): Promise<AxiosResponse> => {
 };
 
 export const UserInfo: React.FC<Props> = ({ children }) => {
+	const socketData = useContext(SocketContext);
 	const navigate = useNavigate();
 	const { isLoading: isFetchingUser } = useQuery({
 		queryKey: ['user'],
@@ -42,9 +50,13 @@ export const UserInfo: React.FC<Props> = ({ children }) => {
 
 		if (isUserAbsent) return navigate('/signin');
 		if (isAvatarAbsent) return navigate('/choose-your-avatar');
+		if (user) {
+			socketData?.socket.open();
+			socketData?.socket.emit('add-user', user._id);
 
-		return navigate('/');
-	}, [user]);
+			return navigate('/');
+		}
+	}, [user, socketData]);
 
 	return (
 		<UserContext.Provider

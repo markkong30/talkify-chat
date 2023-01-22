@@ -4,6 +4,7 @@ import { useInView } from 'react-intersection-observer';
 import styled from 'styled-components';
 import { Message } from '../types';
 import DownArrow from './DownArrow';
+import MessageContent from './MessageContent';
 
 type Props = {
 	messages: Message[];
@@ -47,10 +48,7 @@ const Messages: React.FC<Props> = ({ messages }) => {
 					fromSelf={message.fromSelf}
 					ref={i === lastMessageIndex ? lastMessageRef : null}
 				>
-					<div className="content">
-						{message.image && <img src={message.image} alt="" />}
-						{message.message && <p>{message.message}</p>}
-					</div>
+					<MessageContent message={message}></MessageContent>
 				</MessageContainer>
 			))}
 			<AnimatePresence>
@@ -95,28 +93,6 @@ const MessageContainer = styled.div<StyledPropMessage>`
 	display: flex;
 	align-items: center;
 	justify-content: ${({ fromSelf }) => (fromSelf ? 'flex-end' : 'flex-start')};
-
-	.content {
-		max-width: 70%;
-		overflow-wrap: break-word;
-		white-space: pre-wrap;
-		padding: 1rem;
-		font-size: 1.1rem;
-		border-radius: 1rem;
-		color: #d1d1d1;
-		background-color: ${({ fromSelf }) =>
-			fromSelf ? '#4f04ff21' : '#9900ff20'};
-		display: flex;
-		flex-direction: column;
-		gap: 1rem;
-
-		img {
-			max-width: 100%;
-			object-fit: stretch;
-			object-position: center;
-			display: block;
-		}
-	}
 `;
 
 type StyledPropMessage = {

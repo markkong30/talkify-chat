@@ -2,10 +2,11 @@ import axios from 'axios';
 import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { Socket } from 'socket.io-client';
 import { UserContext } from '../../context/UserContext';
 import { signOutAPI } from '../../utils/APIRoutes';
 
-export const useSignOut = () => {
+export const useSignOut = (socket: Socket) => {
 	const navigate = useNavigate();
 	const userData = useContext(UserContext);
 
@@ -20,6 +21,7 @@ export const useSignOut = () => {
 			);
 			if (data) {
 				userData?.setUser(undefined);
+				socket.close();
 			}
 		} catch (err) {
 			toast.error('Error... Please try again');
