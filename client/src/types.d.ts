@@ -10,16 +10,18 @@ export type User = {
 	lastSeen: Date;
 };
 
-type UserContext = {
-	socket: Socket;
-	user: User | undefined;
+export type UserContext = {
+	user: User | undefined | null;
 	setUser: (user: User | undefined) => void;
 	isFetchingUser: boolean;
-	isUserAbsent: boolean;
-	isAvatarAbsent: boolean;
+};
+
+type SocketContext = {
+	socket: Socket;
 };
 
 export type UserContextValue = UserContext | undefined;
+export type SocketContextValue = SocketContext | undefined;
 
 export type Message = {
 	_id: string;

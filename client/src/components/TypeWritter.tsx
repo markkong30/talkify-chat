@@ -37,7 +37,7 @@ const TypeWritter: React.FC<Props> = ({
 			? loadingOptions
 			: {
 					words: [message],
-					typeSpeed: 30,
+					typeSpeed: 20,
 					onLoopDone: () => {
 						setShouldType(false);
 						setLoadingAI(false);
@@ -54,7 +54,7 @@ const TypeWritter: React.FC<Props> = ({
 export default TypeWritter;
 
 const loadingOptions = {
-	words: ['......'],
+	words: ['..............'],
 	loop: 0,
 	typeSpeed: 500,
 	deleteSpeed: 500,

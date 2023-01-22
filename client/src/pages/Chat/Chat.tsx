@@ -7,35 +7,29 @@ import Contacts from '../../components/Contacts';
 import { useContacts } from './useContacts';
 import ChatContainer from '../../components/ChatContainer';
 import Spinner from '../../utils/Spinner';
+import { SocketContext } from '../../context/SocketContext';
 
 const Chat = () => {
 	const navigate = useNavigate();
 	const userData = useContext(UserContext);
-	const { contacts } = useContacts(!!userData?.user, userData?.socket);
+	const socketData = useContext(SocketContext);
+	const { contacts } = useContacts(!!userData?.user, socketData?.socket);
 	const [currentChatUserId, setCurrentChatUserId] = useState('');
 	const currentChatUser = contacts?.find(
 		(contact) => contact._id === currentChatUserId
 	);
 
 	useEffect(() => {
-		if (userData?.isUserAbsent) {
-			return navigate('/signin');
-		}
-
-		if (userData?.isAvatarAbsent) {
-			return navigate('/pick-your-avatar');
-		}
-
-		if (userData?.user && userData.socket) {
-			userData.socket.emit('add-user', userData.user._id);
+		if (userData?.user && socketData?.socket) {
+			socketData.socket.emit('add-user', userData.user._id);
 		}
 
 		return () => {
-			userData?.socket.close();
+			socketData?.socket.close();
 		};
-	}, [userData, navigate]);
+	}, [userData, socketData, navigate]);
 
-	if (!userData?.user) return <Spinner />;
+	if (!userData?.user || !socketData?.socket) return <Spinner />;
 
 	return (
 		<Container>
@@ -50,7 +44,7 @@ const Chat = () => {
 					<ChatContainer
 						user={userData.user}
 						currentChatUser={currentChatUser}
-						socket={userData.socket}
+						socket={socketData?.socket}
 					/>
 				) : (
 					<Welcome currentUser={userData?.user} />

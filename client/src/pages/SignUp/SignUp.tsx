@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 import { Formik, Form, Field, ErrorMessage, FormikProps } from 'formik';
 import styled from 'styled-components';
 import { formikHelper } from './signup.helper';
@@ -9,12 +9,6 @@ import { UserContext } from '../../context/UserContext';
 const SignUp: React.FC = () => {
 	const navigate = useNavigate();
 	const userData = useContext(UserContext);
-
-	useEffect(() => {
-		if (userData?.isUserAbsent) return;
-		if (userData?.isAvatarAbsent) return navigate('/pick-your-avatar');
-		if (userData?.user) return navigate('/');
-	}, [userData, navigate]);
 
 	const {
 		initialValues,

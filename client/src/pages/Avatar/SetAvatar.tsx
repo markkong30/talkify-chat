@@ -19,9 +19,6 @@ const SetAvatar: React.FC = () => {
 	const [isLoading, setIsLoading] = useState(true);
 
 	useEffect(() => {
-		if (userData?.isUserAbsent) return navigate('/signin');
-		if (!userData?.isAvatarAbsent) return navigate('/');
-
 		const setAvatarsFunc = async () => {
 			const avatars: string[] = [];
 
