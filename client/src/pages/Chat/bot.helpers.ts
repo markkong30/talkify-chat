@@ -16,3 +16,6 @@ export const aiBotInfo = {
 };
 
 export const aiLoadingMessage = '..............';
+
+export const getWelcomeMessage = (username: string) =>
+	`Hi ${username}, how can I help you today? \n* Try with /imagine to generate image!`;

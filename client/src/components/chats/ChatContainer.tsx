@@ -9,7 +9,7 @@ import { User } from '../../types';
 import ModalComp from '../../utils/Modal';
 import AIBotMessages from './ai/AIBotMessages';
 import ChatHeader from './ChatHeader';
-import ChatInput from './ChatInput';
+import ChatInput from '../input/ChatInput';
 import Messages from './Messages';
 
 type Props = {
@@ -23,8 +23,11 @@ const ChatContainer: React.FC<Props> = ({ user, currentChatUser, socket }) => {
 	const [showEmojiPicker, setShowEmojiPicker] = useState(false);
 	const { handleSignOut } = useSignOut(socket);
 	const [newMessage, setNewMessage] = useState('');
-	const { messages, sendMessage, sendImage, preloadImage, RenderPreviewModal } =
-		useChat(user._id, currentChatUser._id, socket);
+	const { messages, sendMessage, preloadImage, RenderPreviewModal } = useChat(
+		user._id,
+		currentChatUser._id,
+		socket
+	);
 	const {
 		AIMessages,
 		sendAIMessage,
@@ -60,7 +63,6 @@ const ChatContainer: React.FC<Props> = ({ user, currentChatUser, socket }) => {
 				setShowEmojiPicker={setShowEmojiPicker}
 				newMessage={newMessage}
 				setNewMessage={setNewMessage}
-				sendImage={sendImage}
 				preloadImage={preloadImage}
 				loadingAI={loadingAI}
 			/>

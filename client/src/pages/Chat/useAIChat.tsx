@@ -4,13 +4,15 @@ import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { Message } from '../../types';
 import { getAIImageAPI, getAIMessageAPI } from '../../utils/APIRoutes';
-import { aiLoadingMessage } from './bot.helpers';
+import { aiLoadingMessage, getWelcomeMessage } from './bot.helpers';
+
+const isImage = (message: string) => !!message.match(/^\/imagine.*/g);
 
 const fetchAI = async (prompt: string): Promise<AxiosResponse> => {
-	const imgRegex = /^\/imagine.*/g;
-	const isImage = !!prompt.match(imgRegex);
-	const APIEndpoint = isImage ? getAIImageAPI : getAIMessageAPI;
-	const replacedPrompt = isImage ? prompt.replace(/\/imagine /g, '') : prompt;
+	const APIEndpoint = isImage(prompt) ? getAIImageAPI : getAIMessageAPI;
+	const replacedPrompt = isImage(prompt)
+		? prompt.replace(/\/imagine /g, '')
+		: prompt;
 
 	return await axios.post(APIEndpoint, {
 		prompt: replacedPrompt
@@ -47,6 +49,7 @@ export const useAIChat = (username: string) => {
 		},
 		onError: () => {
 			toast.error('Error occured, please try again!');
+			setAIMessages((prev) => [...prev.slice(0, prev.length - 1)]);
 		},
 		onSettled: () => {
 			setLoadingAI(false);
@@ -59,7 +62,7 @@ export const useAIChat = (username: string) => {
 			setAIMessages([
 				{
 					fromSelf: false,
-					message: `Hi ${username}, how can I help you today?`,
+					message: getWelcomeMessage(username),
 					_id: crypto.randomUUID()
 				}
 			]);
@@ -67,10 +70,15 @@ export const useAIChat = (username: string) => {
 	}, [username]);
 
 	const sendAIMessage = (message: string) => {
-		const messages = [
+		const messages: Message[] = [
 			{
 				fromSelf: true,
-				message,
+				message: isImage(message)
+					? message.replace(/\/imagine /g, '')
+					: message,
+				toAI: {
+					type: isImage(message) ? 'image' : 'text'
+				},
 				_id: crypto.randomUUID()
 			},
 			{

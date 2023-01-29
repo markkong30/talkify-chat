@@ -5,11 +5,10 @@ import { BsEmojiSmileFill, BsImageFill } from 'react-icons/bs';
 import styled from 'styled-components';
 import { Theme } from 'emoji-picker-react';
 import TextareaAutosize from 'react-textarea-autosize';
-import { noop } from 'lodash';
+import noop from 'lodash/noop';
 
 type Props = {
 	sendMessage: (message: string) => void;
-	sendImage: (image: string) => void;
 	preloadImage: (image: string) => void;
 	sendAIMessage?: (message: string) => void;
 	showEmojiPicker: boolean;
@@ -26,7 +25,6 @@ type Props = {
 const ChatInput: React.FC<Props> = ({
 	sendMessage,
 	sendAIMessage = noop,
-	sendImage,
 	preloadImage,
 	showEmojiPicker,
 	setShowEmojiPicker,

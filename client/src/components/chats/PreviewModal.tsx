@@ -3,7 +3,7 @@ import Modal from 'react-modal';
 import styled, { useTheme } from 'styled-components';
 import { FaTimes } from 'react-icons/fa';
 import { GlobalThemes } from '../../styled.theme';
-import ChatInput from './ChatInput';
+import ChatInput from '../input/ChatInput';
 
 type Props = {
 	isOpen: boolean;
@@ -72,7 +72,6 @@ const PreviewModal: React.FC<Props> = ({
 							setShowEmojiPicker={setShowEmojiPicker}
 							newMessage={newMessage}
 							setNewMessage={setNewMessage}
-							sendImage={sendImage}
 							preloadImage={preloadImage}
 							shouldCheckInput={false}
 						/>

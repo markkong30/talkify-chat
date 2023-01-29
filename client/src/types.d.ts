@@ -28,6 +28,9 @@ export type Message = {
 	message: string;
 	image?: string;
 	fromSelf: boolean;
+	toAI?: {
+		type: 'image' | 'text';
+	};
 };
 
 export type MessageModel = {

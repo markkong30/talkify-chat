@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { Message } from '../../types';
 import { convertAIToBase64 } from '../../utils/helpers';
+import MessageTag from './utils/MessageTag';
 
 type Props = {
 	message: Message;
@@ -18,7 +19,14 @@ const MessageContent: React.FC<Props> = ({
 	return (
 		<Content fromSelf={message.fromSelf}>
 			{message.image && <img src={imageSrc} alt={message.message} />}
-			{<p>{message.message}</p>}
+			{
+				<div>
+					{message.fromSelf && isAIGenerated && (
+						<MessageTag type={message.toAI?.type} />
+					)}
+					{message.message}
+				</div>
+			}
 		</Content>
 	);
 };
