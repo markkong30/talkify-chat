@@ -1,9 +1,9 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
-import { User } from '../types';
-import logo from '../assets/logo.svg';
-import { convertStringToBase64 } from '../utils/helpers';
-import { aiBotId } from '../pages/Chat/bot.helpers';
+import { User } from '../../../types';
+import logo from '../../../assets/logo.svg';
+import { convertStringToBase64 } from '../../../utils/helpers';
+import { aiBotId } from '../../../pages/Chat/bot.helpers';
 import { AiFillStar } from 'react-icons/ai';
 
 type Props = {

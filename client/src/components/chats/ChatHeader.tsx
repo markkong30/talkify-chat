@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import { User } from '../types';
-import { convertStringToBase64, getRelativeTime } from '../utils/helpers';
+import { User } from '../../types';
+import { convertStringToBase64, getRelativeTime } from '../../utils/helpers';
 import SignOut from './SignOut';
 
 type Props = {

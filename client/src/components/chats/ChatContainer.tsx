@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { Socket } from 'socket.io-client';
 import styled from 'styled-components';
-import { aiBotId } from '../pages/Chat/bot.helpers';
-import { useAIChat } from '../pages/Chat/useAIChat';
-import { useChat } from '../pages/Chat/useChat';
-import { useSignOut } from '../pages/Chat/useSignOut';
-import { User } from '../types';
-import ModalComp from '../utils/Modal';
-import AIBotMessages from './AIBotMessages';
+import { aiBotId } from '../../pages/Chat/bot.helpers';
+import { useAIChat } from '../../pages/Chat/useAIChat';
+import { useChat } from '../../pages/Chat/useChat';
+import { useSignOut } from '../../pages/Chat/useSignOut';
+import { User } from '../../types';
+import ModalComp from '../../utils/Modal';
+import AIBotMessages from './ai/AIBotMessages';
 import ChatHeader from './ChatHeader';
 import ChatInput from './ChatInput';
 import Messages from './Messages';
@@ -23,14 +23,8 @@ const ChatContainer: React.FC<Props> = ({ user, currentChatUser, socket }) => {
 	const [showEmojiPicker, setShowEmojiPicker] = useState(false);
 	const { handleSignOut } = useSignOut(socket);
 	const [newMessage, setNewMessage] = useState('');
-	const {
-		messages,
-		sendMessage,
-		sendImage,
-		preloadImage,
-		RenderPreviewModal,
-		openModal
-	} = useChat(user._id, currentChatUser._id, socket);
+	const { messages, sendMessage, sendImage, preloadImage, RenderPreviewModal } =
+		useChat(user._id, currentChatUser._id, socket);
 	const {
 		AIMessages,
 		sendAIMessage,
@@ -69,7 +63,6 @@ const ChatContainer: React.FC<Props> = ({ user, currentChatUser, socket }) => {
 				sendImage={sendImage}
 				preloadImage={preloadImage}
 				loadingAI={loadingAI}
-				openModal={openModal}
 			/>
 			<ModalComp
 				modalTitle="Are you sure to sign out?"

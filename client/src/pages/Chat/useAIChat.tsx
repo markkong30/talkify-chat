@@ -8,12 +8,12 @@ import { aiLoadingMessage } from './bot.helpers';
 
 const fetchAI = async (prompt: string): Promise<AxiosResponse> => {
 	const imgRegex = /^\/imagine.*/g;
-	const APIEndpoint = !!prompt.match(imgRegex)
-		? getAIImageAPI
-		: getAIMessageAPI;
+	const isImage = !!prompt.match(imgRegex);
+	const APIEndpoint = isImage ? getAIImageAPI : getAIMessageAPI;
+	const replacedPrompt = isImage ? prompt.replace(/\/imagine /g, '') : prompt;
 
 	return await axios.post(APIEndpoint, {
-		prompt: prompt.replace(/\/imagine /g, '')
+		prompt: replacedPrompt
 	});
 };
 

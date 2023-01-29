@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import Modal from 'react-modal';
 import styled, { useTheme } from 'styled-components';
-import type { GlobalThemes } from '../styled.theme';
 import { FaTimes } from 'react-icons/fa';
+import { GlobalThemes } from '../../styled.theme';
 import ChatInput from './ChatInput';
 
 type Props = {
@@ -74,7 +74,6 @@ const PreviewModal: React.FC<Props> = ({
 							setNewMessage={setNewMessage}
 							sendImage={sendImage}
 							preloadImage={preloadImage}
-							openModal={openModal}
 							shouldCheckInput={false}
 						/>
 					</div>

@@ -19,7 +19,6 @@ app.use(
 		origin: [
 			'http://localhost:3000',
 			'http://localhost:3001',
-			'https://talkify.up.railway.app',
 			'https://talkify-chat.netlify.app'
 		],
 		credentials: true

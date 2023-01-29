@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { Socket } from 'socket.io-client';
-import PreviewModal from '../../components/PreviewModal';
+import PreviewModal from '../../components/chats/PreviewModal';
 import { Message, MessageModel } from '../../types';
 import { getAllMessagesAPI, sendMessageAPI } from '../../utils/APIRoutes';
 

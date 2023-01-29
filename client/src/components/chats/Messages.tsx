@@ -1,31 +1,16 @@
 import { AnimatePresence } from 'framer-motion';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 import { useInView } from 'react-intersection-observer';
 import styled from 'styled-components';
-import { Message } from '../types';
-import { usePrevious } from '../pages/Chat/usePrevious';
-import DownArrow from './DownArrow';
-import TypeWritter from './TypeWritter';
+import { Message } from '../../types';
+import DownArrow from './utils/DownArrow';
 import MessageContent from './MessageContent';
 
 type Props = {
 	messages: Message[];
-	setShouldType: (boolean: boolean) => void;
-	shouldType: boolean;
-	loadingAI: boolean;
-	setLoadingAI: (boolean: boolean) => void;
 };
 
-const AIBotMessages: React.FC<Props> = ({
-	messages,
-	setShouldType,
-	shouldType,
-	loadingAI,
-	setLoadingAI
-}) => {
-	const [isScrolling, setIsScrolling] = useState(false);
-	const [top, setTop] = useState<number | null>(null);
-	const { prev: previousTop, setPrev: setPreviousTop } = usePrevious(top);
+const Messages: React.FC<Props> = ({ messages }) => {
 	const lastMessageIndex = messages.length - 1;
 	const ref = useRef<HTMLDivElement>(null);
 	const [lastMessageRef, inView, entry] = useInView({
@@ -52,54 +37,20 @@ const AIBotMessages: React.FC<Props> = ({
 	);
 
 	useEffect(() => {
-		if (ref.current && top && previousTop) {
-			if (previousTop > top) {
-				setIsScrolling(true);
-			} else {
-				setIsScrolling(false);
-			}
-		}
-	}, [top]);
-
-	useEffect(() => {
 		scrollLastMessageIntoView();
 	}, [entry?.target, scrollLastMessageIntoView]);
 
 	return (
-		<Container
-			ref={ref}
-			shouldScrollSmooth={true}
-			onScroll={() => {
-				if (shouldType && ref.current) {
-					setTop(ref.current.scrollTop);
-				}
-			}}
-		>
+		<Container ref={ref} shouldScrollSmooth={true}>
 			{messages?.map((message, i) => (
 				<MessageContainer
 					key={message._id}
 					fromSelf={message.fromSelf}
 					ref={i === lastMessageIndex ? lastMessageRef : null}
 				>
-					{i === lastMessageIndex &&
-					!message.fromSelf &&
-					!message.image &&
-					shouldType ? (
-						<div className="type-writter">
-							<TypeWritter
-								message={message.message}
-								setShouldType={setShouldType}
-								isScrolling={isScrolling}
-								setPreviousTop={setPreviousTop}
-								setLoadingAI={setLoadingAI}
-							/>
-						</div>
-					) : (
-						<MessageContent message={message} isAIGenerated></MessageContent>
-					)}
+					<MessageContent message={message}></MessageContent>
 				</MessageContainer>
 			))}
-
 			<AnimatePresence>
 				{!inView && !!messages.length && (
 					<DownArrow handleClick={scrollLastMessageIntoView} />
@@ -142,23 +93,10 @@ const MessageContainer = styled.div<StyledPropMessage>`
 	display: flex;
 	align-items: center;
 	justify-content: ${({ fromSelf }) => (fromSelf ? 'flex-end' : 'flex-start')};
-
-	.type-writter {
-		max-width: 100%;
-		overflow-wrap: break-word;
-		white-space: pre-wrap;
-		padding: 1rem;
-		font-size: 1.1rem;
-		line-height: 1.3rem;
-		border-radius: 1rem;
-		color: #d1d1d1;
-		background-color: ${({ fromSelf }) =>
-			fromSelf ? '#4f04ff21' : '#9900ff20'};
-	}
 `;
 
 type StyledPropMessage = {
 	fromSelf: boolean;
 };
 
-export default AIBotMessages;
+export default Messages;

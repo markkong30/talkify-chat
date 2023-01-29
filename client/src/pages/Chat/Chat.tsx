@@ -1,12 +1,12 @@
 import React, { useContext, useState } from 'react';
 import styled from 'styled-components';
-import Welcome from '../../components/Welcome';
 import { UserContext } from '../../context/UserContext';
-import Contacts from '../../components/Contacts';
+import Contacts from '../../components/chats/contacts/Contacts';
 import { useContacts } from './useContacts';
-import ChatContainer from '../../components/ChatContainer';
+import ChatContainer from '../../components/chats/ChatContainer';
 import Spinner from '../../utils/Spinner';
 import { SocketContext } from '../../context/SocketContext';
+import Welcome from '../../components/chats/Welcome';
 
 const Chat = () => {
 	const userData = useContext(UserContext);

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useTypewriter } from 'react-simple-typewriter';
 import { useInView } from 'react-intersection-observer';
-import { aiLoadingMessage } from '../pages/Chat/bot.helpers';
+import { aiLoadingMessage } from '../../../pages/Chat/bot.helpers';
 
 type Props = {
 	message: string;
@@ -54,7 +54,7 @@ const TypeWritter: React.FC<Props> = ({
 export default TypeWritter;
 
 const loadingOptions = {
-	words: ['..............'],
+	words: [aiLoadingMessage],
 	loop: 0,
 	typeSpeed: 400,
 	deleteSpeed: 400,

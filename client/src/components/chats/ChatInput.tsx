@@ -21,7 +21,6 @@ type Props = {
 	isAIChat: boolean;
 	loadingAI?: boolean;
 	shouldShowImageUpload?: boolean;
-	openModal: () => void;
 	shouldCheckInput?: boolean;
 };
 const ChatInput: React.FC<Props> = ({
@@ -35,7 +34,6 @@ const ChatInput: React.FC<Props> = ({
 	setNewMessage,
 	isAIChat,
 	loadingAI,
-	openModal,
 	shouldShowImageUpload = false,
 	shouldCheckInput = true
 }) => {

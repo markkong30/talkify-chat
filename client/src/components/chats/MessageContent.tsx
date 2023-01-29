@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import { Message } from '../types';
-import { convertAIToBase64 } from '../utils/helpers';
+import { Message } from '../../types';
+import { convertAIToBase64 } from '../../utils/helpers';
 
 type Props = {
 	message: Message;
