@@ -1,8 +1,11 @@
+import { useContext } from 'react';
 import { createContext, ReactNode } from 'react';
 import { io } from 'socket.io-client';
 import { SocketContextValue } from '../types';
 
 export const SocketContext = createContext<SocketContextValue>(undefined);
+
+export const useSocket = () => useContext(SocketContext);
 
 type Props = { children: ReactNode };
 

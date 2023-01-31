@@ -1,14 +1,13 @@
-import React, { useContext } from 'react';
 import { Formik, Form, Field, ErrorMessage, FormikProps } from 'formik';
 import styled from 'styled-components';
 import { formikHelper } from './signup.helper';
 import logo from '../../assets/logo.svg';
 import { useNavigate } from 'react-router-dom';
-import { UserContext } from '../../context/UserContext';
+import { useUser } from '../../context/UserContext';
 
 const SignUp: React.FC = () => {
 	const navigate = useNavigate();
-	const userData = useContext(UserContext);
+	const userData = useUser();
 
 	const {
 		initialValues,

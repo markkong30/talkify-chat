@@ -1,16 +1,16 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
-import { UserContext } from '../../context/UserContext';
+import { useUser } from '../../context/UserContext';
 import Contacts from '../../components/chats/contacts/Contacts';
 import { useContacts } from './useContacts';
 import ChatContainer from '../../components/chats/ChatContainer';
 import Spinner from '../../utils/Spinner';
-import { SocketContext } from '../../context/SocketContext';
+import { useSocket } from '../../context/SocketContext';
 import Welcome from '../../components/chats/Welcome';
 
 const Chat = () => {
-	const userData = useContext(UserContext);
-	const socketData = useContext(SocketContext);
+	const userData = useUser();
+	const socketData = useSocket();
 	const { contacts } = useContacts(!!userData?.user, socketData?.socket);
 	const [currentChatUserId, setCurrentChatUserId] = useState('');
 	const currentChatUser = contacts?.find(

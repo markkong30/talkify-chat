@@ -14,9 +14,11 @@ import {
 import { getUserInfo } from '../utils/APIRoutes';
 import { useQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
-import { SocketContext } from './SocketContext';
+import { useSocket } from './SocketContext';
 
 export const UserContext = createContext<UserContextValue>(undefined);
+
+export const useUser = () => useContext(UserContext);
 
 type Props = { children: ReactNode };
 
@@ -29,7 +31,7 @@ const fetchUser = async (): Promise<AxiosResponse> => {
 };
 
 export const UserInfo: React.FC<Props> = ({ children }) => {
-	const socketData = useContext(SocketContext);
+	const socketData = useSocket();
 	const navigate = useNavigate();
 	const { isLoading: isFetchingUser } = useQuery({
 		queryKey: ['user'],

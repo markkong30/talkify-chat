@@ -1,18 +1,18 @@
 import axios from 'axios';
 import classNames from 'classnames';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { getAvatarAPI, setAvatarAPI } from '../../utils/APIRoutes';
 import { Buffer } from 'buffer';
-import { UserContext } from '../../context/UserContext';
+import { useUser } from '../../context/UserContext';
 import { toast } from 'react-toastify';
 import { convertStringToBase64 } from '../../utils/helpers';
 import Spinner from '../../utils/Spinner';
 
 const SetAvatar: React.FC = () => {
 	const navigate = useNavigate();
-	const userData = useContext(UserContext);
+	const userData = useUser();
 
 	const [avatars, setAvatars] = useState<string[]>([]);
 	const [selectedAvatar, setSelectedAvatar] = useState<number | null>(null);
